@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CovadisAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,27 @@ namespace CovadisAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            using (var context = new ApplicationDbContext())
+            {
+                //Maakt de database als je hem nog niet hebt. 
+                context.Database.EnsureCreated();
+
+                context.Services.Add(new ServicesDataModel()
+                {
+                    Endpoint = "https://gms.azurewebsites.net/"
+                });
+                context.Services.Add(new ServicesDataModel()
+                {
+                    Endpoint = "https://gmsapi.azurewebsites.net/Record/last"
+                });
+                context.SaveChanges();
+
+            }
+
+
+            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

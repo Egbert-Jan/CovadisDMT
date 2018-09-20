@@ -9,13 +9,13 @@ namespace CovadisAPI.Data
     public class ApplicationDbContext : DbContext
     {
 
-        //De table
+        //De tables
         public DbSet<ServicesDataModel> Services { get; set; }
-
+        public DbSet<WebsitesDataModel> Websites { get; set; }
 
         public ApplicationDbContext()
         {
-
+            
         }
 
 

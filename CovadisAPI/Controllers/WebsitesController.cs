@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CovadisAPI.Checks;
+using CovadisAPI.Data;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,25 @@ namespace CovadisAPI.Controllers
     public class WebsitesController : ControllerBase
     {
 
+        // GET api/websites
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<List<string>>>> GetAsync()
+        {
+            List<List<string>> checkedWebsites = new List<List<string>> { };
 
+            WebsiteCheck check = new WebsiteCheck();
+
+            using (var context = new ApplicationDbContext())
+            {
+
+                foreach (var website in context.Websites)
+                {
+                    checkedWebsites.Add(await check.CheckWebsite(website));
+                }
+
+            }
+
+            return checkedWebsites;
+        }
     }
 }

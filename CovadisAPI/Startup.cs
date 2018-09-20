@@ -32,16 +32,37 @@ namespace CovadisAPI
                 //Maakt de database als je hem nog niet hebt. 
                 context.Database.EnsureCreated();
 
-                context.Services.Add(new ServicesDataModel()
+                if (!context.Services.Any())
                 {
-                    Endpoint = "https://gms.azurewebsites.net/"
-                });
-                context.Services.Add(new ServicesDataModel()
-                {
-                    Endpoint = "https://gmsapi.azurewebsites.net/Record/last"
-                });
-                context.SaveChanges();
+                    context.Services.Add(new ServicesDataModel()
+                    {
+                        Endpoint = "https://gms.azurewebsites.net/"
+                    });
+                    context.Services.Add(new ServicesDataModel()
+                    {
+                        Endpoint = "https://gmsapi.azurewebsites.net/Record/last"
+                    });
+                }
 
+                if (!context.Websites.Any())
+                {
+                    context.Websites.Add(new WebsitesDataModel()
+                    {
+                        Url = "https://gms.azurewebsites.net/",
+                        Element1 = "Hello",
+                        Element2 = "Hallo",
+                        Element3 = "Bonjour"
+                    });
+                    context.Websites.Add(new WebsitesDataModel()
+                    {
+                        Url = "https://gms.azurewebsites.net/",
+                        Element1 = "Hello",
+                        Element2 = "Halo",
+                        Element3 = "Bonjour"
+                    });
+                }
+                   
+                context.SaveChanges();
             }
 
 

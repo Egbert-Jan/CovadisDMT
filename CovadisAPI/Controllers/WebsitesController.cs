@@ -1,6 +1,7 @@
 ﻿using CovadisAPI.Checks;
 using CovadisAPI.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,5 +35,32 @@ namespace CovadisAPI.Controllers
 
             return checkedWebsites;
         }
+
+
+
+
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public ActionResult<string> Get(int id)
+        {
+
+
+
+            using (var context = new ApplicationDbContext())
+            {
+                IList<ElementsDataModel> elements = context.Elements.Include(c => c.WebsiteId).ToList();
+                return "" + elements;
+            }
+
+
+
+
+
+            return "website";
+        }
     }
+
+
+
+  
 }

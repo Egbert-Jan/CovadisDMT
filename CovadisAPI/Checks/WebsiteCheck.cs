@@ -5,26 +5,33 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CovadisAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CovadisAPI.Checks
 {
     public class WebsiteCheck
     {
 
-        public WebsiteCheck()
-        {
-
-        }
-
-
         public async Task<List<string>> CheckWebsite(WebsitesDataModel website)
         {
+            List<ElementsDataModel> elementsToCheck = new List<ElementsDataModel> { };
             List<string> websiteData = new List<string> { };
 
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var element in context.Elements)
+                {
+                    if (element.WebsiteId == website.Id)
+                    {
+                        elementsToCheck.Add(element);
+                    }
+                }
+            }
+
+
             using (HttpClient client = new HttpClient())
-
             using (HttpResponseMessage res = await client.GetAsync(website.Url))
-
             using (HttpContent content = res.Content)
             {
                 string data = await content.ReadAsStringAsync();
@@ -32,19 +39,21 @@ namespace CovadisAPI.Checks
                 if (data != null)
                 {
                     websiteData.Add(website.Url);
-                    //Checkt of dat de website die ingevoert is de data contains die in de database staat
-                    if (data.Contains(website.Element1) && data.Contains(website.Element2) && data.Contains(website.Element3))
+
+                    foreach (var element in elementsToCheck)
                     {
-                        websiteData.Add("Goed");
-                    }
-                    else
-                    {
-                        websiteData.Add("Fout");
+                        if (!data.Contains(element.ElementName))
+                        {
+                            websiteData.Add("Fout");
+                        }
+                        else
+                        {
+                            websiteData.Add("Goed");
+                        }
                     }
                 }
                 return websiteData;
             }
-
         }
     }
 }

@@ -18,13 +18,23 @@ namespace CovadisAPI.Data
         [MaxLength(100)]
         public string LaatsteData { get; set; }
 
-        [MaxLength(100)]
-        public string Element1 { get; set; }
+        [Required]
+        public IList<ElementsDataModel> Elements { get; set; }
+        
+    }
 
-        [MaxLength(100)]
-        public string Element2 { get; set; }
 
-        [MaxLength(100)]
-        public string Element3 { get; set; }
+    public class ElementsDataModel
+    {
+        [Key]
+        public int Id { get; set; }
+
+
+        [Required]
+        [MaxLength(300)]
+        public string ElementName { get; set; }
+
+        public int WebsiteId { get; set; }
+        public WebsitesDataModel Website { get; set; }
     }
 }

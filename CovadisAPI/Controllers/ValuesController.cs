@@ -13,7 +13,7 @@ namespace CovadisAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+        //GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<ServicesDataModel>> Get()
         {
@@ -22,7 +22,6 @@ namespace CovadisAPI.Controllers
 
             using (var context = new ApplicationDbContext())
             {
-
                 foreach (var row in context.Services)
                 {
                     dataBaseData.Add(row);

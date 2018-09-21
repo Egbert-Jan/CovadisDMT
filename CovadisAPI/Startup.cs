@@ -44,24 +44,44 @@ namespace CovadisAPI
                     });
                 }
 
+
+
+
+
                 if (!context.Websites.Any())
                 {
+                  
+                    ElementsDataModel element1 = new ElementsDataModel { ElementName = "Hello" };
+
+                    ElementsDataModel element2 = new ElementsDataModel { ElementName = "Hallo" };
+
+                    ElementsDataModel element3 = new ElementsDataModel { ElementName = "Bonjour" };
+
                     context.Websites.Add(new WebsitesDataModel()
                     {
                         Url = "https://gms.azurewebsites.net/",
-                        Element1 = "Hello",
-                        Element2 = "Hallo",
-                        Element3 = "Bonjour"
+                        Elements = new List<ElementsDataModel> { element1, element2, element3 }
                     });
+
+                    ElementsDataModel element11 = new ElementsDataModel { ElementName = "Hello" };
+
+                    ElementsDataModel element22 = new ElementsDataModel { ElementName = "Halo" };
+
+                    ElementsDataModel element33 = new ElementsDataModel { ElementName = "Bonjour" };
+
+
+                    
                     context.Websites.Add(new WebsitesDataModel()
                     {
                         Url = "https://gms.azurewebsites.net/",
-                        Element1 = "Hello",
-                        Element2 = "Halo",
-                        Element3 = "Bonjour"
+                        Elements = new List<ElementsDataModel> { element11, element22, element33 }
                     });
-                }
+
                    
+
+                }
+
+
                 context.SaveChanges();
             }
 

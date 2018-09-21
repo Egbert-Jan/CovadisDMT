@@ -12,6 +12,7 @@ namespace CovadisAPI.Data
         //De tables
         public DbSet<ServicesDataModel> Services { get; set; }
         public DbSet<WebsitesDataModel> Websites { get; set; }
+        public DbSet<ElementsDataModel> Elements { get; set; }
 
         public ApplicationDbContext()
         {

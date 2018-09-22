@@ -15,22 +15,15 @@ namespace CovadisAPI.Checks
 
         public async Task<List<string>> CheckWebsite(WebsitesDataModel website)
         {
-            List<ElementsDataModel> elementsToCheck = new List<ElementsDataModel> { };
             List<string> websiteData = new List<string> { };
 
 
-
-
+            //PAK ALLE ELEMENTEN
+            IList<ElementsDataModel> elements;
             using (var context = new ApplicationDbContext())
             {
-                //VOEGT ALLEEN DE ELEMENTEN MET HET ZELFDE ID ALS DEZE WEBSITE TOE AAN elementsToCheck
-                foreach (var element in context.Elements)
-                {
-                    if (element.WebsiteId == website.Id)
-                    {
-                        elementsToCheck.Add(element);
-                    }
-                }
+                elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
 
@@ -44,10 +37,11 @@ namespace CovadisAPI.Checks
                 if (data != null)
                 {
                     websiteData.Add(website.Url);
-
+                    
                     //LOOPT DOOR DE elementsToCheck EN CHECKT OF DE ELEMENTEN IN DE OPGEHAALDE SITE STAAN
-                    foreach (var element in elementsToCheck)
+                    foreach (var element in elements)
                     {
+                        Debug.WriteLine(element.Website.Url);
                         if (!data.Contains(element.ElementName))
                         {
                             websiteData.Add("Fout");

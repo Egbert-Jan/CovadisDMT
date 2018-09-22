@@ -9,7 +9,7 @@ namespace CovadisAPI.Data
     public class WebsitesDataModel
     {
         [Key]
-        public int Id { get; set; }
+        public int WebsiteID { get; set; }
 
         [Required]
         [MaxLength(300)]
@@ -27,14 +27,15 @@ namespace CovadisAPI.Data
     public class ElementsDataModel
     {
         [Key]
-        public int Id { get; set; }
+        public int ElementID { get; set; }
 
 
         [Required]
         [MaxLength(300)]
         public string ElementName { get; set; }
 
-        public int WebsiteId { get; set; }
+        //is niet nodig?:
+        //public int WebsiteId { get; set; }
         public WebsitesDataModel Website { get; set; }
     }
 }

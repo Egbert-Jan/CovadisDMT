@@ -32,6 +32,8 @@ namespace CovadisAPI
                 //Maakt de database als je hem nog niet hebt. 
                 context.Database.EnsureCreated();
 
+
+
                 if (!context.Services.Any())
                 {
                     context.Services.Add(new ServicesDataModel()
@@ -46,8 +48,7 @@ namespace CovadisAPI
 
 
 
-
-
+                //ALS DE DATABASE AAN GEMAAKT WORDT VOEGT HET TEST DATA TOE
                 if (!context.Websites.Any())
                 {
                   
@@ -63,25 +64,23 @@ namespace CovadisAPI
                         Elements = new List<ElementsDataModel> { element1, element2, element3 }
                     });
 
+
                     ElementsDataModel element11 = new ElementsDataModel { ElementName = "Hello" };
 
                     ElementsDataModel element22 = new ElementsDataModel { ElementName = "Halo" };
 
                     ElementsDataModel element33 = new ElementsDataModel { ElementName = "Bonjour" };
-
-
-                    
+ 
                     context.Websites.Add(new WebsitesDataModel()
                     {
                         Url = "https://gms.azurewebsites.net/",
                         Elements = new List<ElementsDataModel> { element11, element22, element33 }
                     });
 
-                   
-
                 }
 
 
+                //SAVED TE DATA DIE JE HEBT AANGEPAST
                 context.SaveChanges();
             }
 

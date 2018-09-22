@@ -22,17 +22,15 @@ namespace CovadisAPI.Controllers
             List<List<string>> checkedWebsites = new List<List<string>> { };
 
             WebsiteCheck check = new WebsiteCheck();
-
             using (var context = new ApplicationDbContext())
             {
-
                 foreach (var website in context.Websites)
                 {
+                    //RUNT DE CheckWebsite FUNCTION EN DAT RETURNT EEN ARRAY MET DE URL EN PER ELEMENT OF HET GOED OF FOUT IS
                     checkedWebsites.Add(await check.CheckWebsite(website));
                 }
-
             }
-
+            
             return checkedWebsites;
         }
 
@@ -43,18 +41,6 @@ namespace CovadisAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-
-
-
-            using (var context = new ApplicationDbContext())
-            {
-                IList<ElementsDataModel> elements = context.Elements.Include(c => c.WebsiteId).ToList();
-                return "" + elements;
-            }
-
-
-
-
 
             return "website";
         }

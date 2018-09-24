@@ -79,7 +79,17 @@ namespace CovadisAPI
 
                 }
 
-          
+
+
+                //ElementsDataModel newElement = new ElementsDataModel { ElementName = "Bonjour" };
+
+                ////WebsitesDataModel website = context.Websites.First(w => w.WebsiteID == 2);
+                //WebsitesDataModel website = context.Websites.Find(2);
+                ////website.LaatsteData = "test";
+
+                //website.Elements.Add(new ElementsDataModel { ElementName = "wow" });
+                
+
 
                 //SAVED TE DATA DIE JE HEBT AANGEPAST
                 context.SaveChanges();

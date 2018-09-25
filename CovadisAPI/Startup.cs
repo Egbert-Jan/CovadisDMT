@@ -33,62 +33,33 @@ namespace CovadisAPI
                 context.Database.EnsureCreated();
 
 
-
-                if (!context.Services.Any())
-                {
-                    context.Services.Add(new ServicesDataModel()
-                    {
-                        Endpoint = "https://gms.azurewebsites.net/"
-                    });
-                    context.Services.Add(new ServicesDataModel()
-                    {
-                        Endpoint = "https://gmsapi.azurewebsites.net/Record/last"
-                    });
-                }
-
-
-
                 //ALS DE DATABASE AAN GEMAAKT WORDT VOEGT HET TEST DATA TOE
                 if (!context.Websites.Any())
                 {
-                  
-                    ElementsDataModel element1 = new ElementsDataModel { ElementName = "Hello" };
-
-                    ElementsDataModel element2 = new ElementsDataModel { ElementName = "Hallo" };
-
-                    ElementsDataModel element3 = new ElementsDataModel { ElementName = "Bonjour" };
-
-                    context.Websites.Add(new WebsitesDataModel()
-                    {
-                        Url = "https://gms.azurewebsites.net/",
-                        Elements = new List<ElementsDataModel> { element1, element2, element3 }
-                    });
-
-
-                    ElementsDataModel element11 = new ElementsDataModel { ElementName = "Hello" };
-
-                    ElementsDataModel element22 = new ElementsDataModel { ElementName = "Halo" };
-
-                    ElementsDataModel element33 = new ElementsDataModel { ElementName = "Bonjour" };
- 
-                    context.Websites.Add(new WebsitesDataModel()
-                    {
-                        Url = "https://gms.azurewebsites.net/",
-                        Elements = new List<ElementsDataModel> { element11, element22, element33 }
-                    });
-
+                    beginDataVoorDatabase();
                 }
 
 
 
-                //ElementsDataModel newElement = new ElementsDataModel { ElementName = "Bonjour" };
-
-                ////WebsitesDataModel website = context.Websites.First(w => w.WebsiteID == 2);
+                //VOEG EEN NIEUW ELEMENT TOE AAN EEN BESTAANDE WEBSITE
                 //WebsitesDataModel website = context.Websites.Find(2);
-                ////website.LaatsteData = "test";
 
-                //website.Elements.Add(new ElementsDataModel { ElementName = "wow" });
-                
+                //context.Elements.Add(new ElementsDataModel()
+                //{
+                //    ElementName = "test",
+                //    Website = website
+                //});
+
+
+                //VERWIJDER EEN ELEMENT:
+                //ElementsDataModel element = context.Elements.Find(1003);
+                //context.Elements.Remove(element);
+
+
+                //UPDATE EEN ELEMENT:
+                //ElementsDataModel element = context.Elements.Find(1003);
+                //element.ElementName = "nieuwe test";
+
 
 
                 //SAVED TE DATA DIE JE HEBT AANGEPAST
@@ -115,6 +86,40 @@ namespace CovadisAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+        }
+
+
+        private void beginDataVoorDatabase()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                ElementsDataModel element1 = new ElementsDataModel { ElementName = "Hello" };
+
+                ElementsDataModel element2 = new ElementsDataModel { ElementName = "Hallo" };
+
+                ElementsDataModel element3 = new ElementsDataModel { ElementName = "Bonjour" };
+
+                context.Websites.Add(new WebsitesDataModel()
+                {
+                    Url = "https://gms.azurewebsites.net/",
+                    Elements = new List<ElementsDataModel> { element1, element2, element3 }
+                });
+
+
+                ElementsDataModel element11 = new ElementsDataModel { ElementName = "Hello" };
+
+                ElementsDataModel element22 = new ElementsDataModel { ElementName = "Halo" };
+
+                ElementsDataModel element33 = new ElementsDataModel { ElementName = "Bonjour" };
+
+                context.Websites.Add(new WebsitesDataModel()
+                {
+                    Url = "https://gms.azurewebsites.net/",
+                    Elements = new List<ElementsDataModel> { element11, element22, element33 }
+                });
+
+                context.SaveChanges();
+            }
         }
     }
 }

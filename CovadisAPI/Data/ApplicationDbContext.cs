@@ -13,7 +13,7 @@ namespace CovadisAPI.Data
         public DbSet<ServicesDataModel> Services { get; set; }
         public DbSet<WebsitesDataModel> Websites { get; set; }
         public DbSet<ElementsDataModel> Elements { get; set; }
-        public DbSet<WebsiteElements> WebsiteElements { get; set; }
+        //public DbSet<WebsiteElements> WebsiteElements { get; set; }
 
         public ApplicationDbContext()
         {

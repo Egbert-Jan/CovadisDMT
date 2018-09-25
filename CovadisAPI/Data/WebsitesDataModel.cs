@@ -29,23 +29,24 @@ namespace CovadisAPI.Data
         [Key]
         public int ElementID { get; set; }
 
-
         [Required]
         [MaxLength(300)]
         public string ElementName { get; set; }
 
-        ////is niet nodig?:
-        ////[ForeignKey()]
-        ////public int WebsiteId { get; set; }
+
         public WebsitesDataModel Website { get; set; }
     }
 
-    public class WebsiteElements
-    {
-        public int Id { get; set; }
 
-        public int WebsiteId { get; set; }
 
-        public int ElementId { get; set; }
-    }
+
+    //Jos:
+    //public class WebsiteElements
+    //{
+    //    public int Id { get; set; }
+
+    //    public int WebsiteId { get; set; }
+
+    //    public int ElementId { get; set; }
+    //}
 }

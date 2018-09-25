@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CovadisAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+
 
 namespace CovadisAPI.Checks
 {
@@ -17,12 +19,12 @@ namespace CovadisAPI.Checks
         {
             List<string> websiteData = new List<string> { };
 
-
             //PAK ALLE ELEMENTEN
             IList<ElementsDataModel> elements;
             using (var context = new ApplicationDbContext())
             {
                 elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
@@ -42,6 +44,7 @@ namespace CovadisAPI.Checks
                     foreach (var element in elements)
                     {
                         Debug.WriteLine(element.Website.Url);
+                        
                         if (!data.Contains(element.ElementName))
                         {
                             websiteData.Add("Fout");

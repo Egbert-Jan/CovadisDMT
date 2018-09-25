@@ -42,6 +42,11 @@ namespace CovadisAPI.Controllers
         public ActionResult<string> Get(int id)
         {
 
+            using(var context = new ApplicationDbContext())
+            {
+                var website = context.Websites.Find(id);
+            }
+
             return "website";
         }
     }

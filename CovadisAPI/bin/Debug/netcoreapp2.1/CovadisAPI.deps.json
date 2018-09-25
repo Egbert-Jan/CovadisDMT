@@ -25,7 +25,8 @@
       "CovadisAPI/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.App": "2.1.1",
-          "Microsoft.NETCore.App": "2.1.0"
+          "Microsoft.NETCore.App": "2.1.0",
+          "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
           "CovadisAPI.dll": {}

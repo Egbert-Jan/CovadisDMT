@@ -10,8 +10,7 @@
         
     <div class="col-sm-2 rightBorder">
         <h2>Add new check</h2>
-        <input class="btn btn-primary" type="button" value="Add new" 
-               onclick="location.href='@Url.Action("AddNew", "Home" )'" />
+        @Html.ActionLink("Add new","Index","Website", new { }, new { @class = "btn btn-primary" })
     </div>
 
     <div class="col-sm-5 rightBorder">

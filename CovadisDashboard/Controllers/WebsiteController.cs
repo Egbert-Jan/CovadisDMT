@@ -1,47 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CovadisDashboard.Models;
 using Microsoft.AspNetCore.Mvc;
-using CovadisDashboard.Models;
 
 namespace CovadisDashboard.Controllers
 {
-    public class HomeController : Controller
+    public class WebsiteController : Controller
     {
+        // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult AddNew()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult EditWebsite()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult Add()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Update()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
+        }
+
+        public IActionResult Delete()
+        {
+            return View();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult AddNew(WebsiteModel model)
+        public IActionResult Add(WebsiteModel model)
         {
             if (string.IsNullOrEmpty(model.Url))
             {
@@ -63,7 +49,6 @@ namespace CovadisDashboard.Controllers
 
                 return Content(baseString);
             }
-
         }
     }
 }

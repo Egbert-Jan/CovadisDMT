@@ -2,8 +2,11 @@
 
 namespace CovadisDashboard.Models
 {
-    public class FormModel
+    public class WebsiteModel
     {
+        [DisplayName("Name:")]
+        public string Name { get; set; }
+
         [DisplayName("Url:")]
         public string Url { get; set; }
 

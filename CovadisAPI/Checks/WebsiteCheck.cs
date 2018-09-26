@@ -24,40 +24,48 @@ namespace CovadisAPI.Checks
             using (var context = new ApplicationDbContext())
             {
                 elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
-                
+
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
 
             // HAALT DE SITE OP EN CHECKT VOOR DE ELEMENTEN DIE IN elementsToCheck staan
-            using (HttpClient client = new HttpClient())
-            using (HttpResponseMessage res = await client.GetAsync(website.Url))
-            using (HttpContent content = res.Content)
+            try
             {
-                string data = await content.ReadAsStringAsync();
-
-                if (data != null)
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage res = await client.GetAsync(website.Url))
+                using (HttpContent content = res.Content)
                 {
-                    websiteData.Add(website.Url);
-                    
-                    //LOOPT DOOR DE elementsToCheck EN CHECKT OF DE ELEMENTEN IN DE OPGEHAALDE SITE STAAN
-                    foreach (var element in elements)
+                    string data = await content.ReadAsStringAsync();
+
+                    if (data != null)
                     {
-                        Debug.WriteLine(element.Website.Url);
-                        
-                        if (!data.Contains(element.ElementName))
+                        websiteData.Add(website.Url);
+
+                        //LOOPT DOOR DE elementsToCheck EN CHECKT OF DE ELEMENTEN IN DE OPGEHAALDE SITE STAAN
+                        foreach (var element in elements)
                         {
-                            websiteData.Add("Fout");
-                        }
-                        else
-                        {
-                            websiteData.Add("Goed");
+                            Debug.WriteLine(element.Website.Url);
+
+                            if (!data.Contains(element.ElementName))
+                            {
+                                websiteData.Add("Fout");
+                            }
+                            else
+                            {
+                                websiteData.Add("Goed");
+                            }
                         }
                     }
-                }
 
-                //RETURNT EEN ARRAY MET DE WEBSITE URL EN PER ELEMENT OF HET GOED OF FOUT IS
-                return websiteData;
+
+                    //RETURNT EEN ARRAY MET DE WEBSITE URL EN PER ELEMENT OF HET GOED OF FOUT IS
+                    return websiteData;
+                }
+            }
+            catch
+            {
+                return new List<string> { "Error met ophalen van url. Dit kan zijn dat er geen https voor staat" };
             }
         }
     }

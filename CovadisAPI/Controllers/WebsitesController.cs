@@ -40,17 +40,26 @@ namespace CovadisAPI.Controllers
 
 
 
-        // GET api/values/5
+        // GET api/websites/{id}
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<List<string>>> GetAsync(int id)
         {
-
+            WebsiteCheck check = new WebsiteCheck();
             using(var context = new ApplicationDbContext())
             {
                 var website = context.Websites.Find(id);
+
+                try
+                {
+                    return await check.CheckWebsite(website);
+                }
+                catch
+                {
+                    return new List<string> { "Kan geen websites vinden met het id: " + id };
+                }
             }
 
-            return "website";
+        
         }
 
 

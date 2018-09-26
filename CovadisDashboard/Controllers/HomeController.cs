@@ -15,14 +15,14 @@ namespace CovadisDashboard.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult AddNew()
         {
             ViewData["Message"] = "Your application description page.";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult EditWebsite()
         {
             ViewData["Message"] = "Your contact page.";
 

@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CovadisAPI.Controllers
@@ -49,9 +52,45 @@ namespace CovadisAPI.Controllers
 
             return "website";
         }
+
+
+
+
+        // POST api/website
+
+        [HttpPost]
+        public void Post([FromBody] WebsitesDataModel nieuweWebsite)
+        {
+            //voegt een service toe
+            using (var context = new ApplicationDbContext())
+            {
+                var website = new WebsitesDataModel()
+                {
+                    Url = nieuweWebsite.Url,
+                    //Elements = nieuweWebsite.Elements
+                };
+                context.Websites.Add(website);
+
+
+                //IK HEB DE ELEMENTEN EN DE WEBSITE ID WAAR ZE AAN TOEGEVOEGD MOETEN WORDEN
+                foreach(var x in nieuweWebsite.Elements)
+                {
+                    Debug.WriteLine("test: " + x.ElementName);
+                    context.Elements.Add(new ElementsDataModel()
+                    {
+                        ElementName = x.ElementName,
+                        Website = website
+                    });
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+
+
+
+
+
     }
-
-
-
-  
 }

@@ -25,7 +25,7 @@ namespace CovadisAPI.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Server =.; Database = CovadisDMT;Trusted_Connection=True;MultipleActiveResultSets=true ");
+            optionsBuilder.UseSqlServer(@"Server =.\MSSQLSERVER01; Database = CovadisDMT;Trusted_Connection=True;MultipleActiveResultSets=true ");
         }
 
 

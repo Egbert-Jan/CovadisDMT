@@ -104,5 +104,52 @@ namespace CovadisAPI.Controllers
         }
 
 
+        [HttpDelete("{id}")]
+        public object Delete(int id)
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                try
+                {
+                    var website = context.Websites.Find(id);
+
+                    List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+
+                    foreach (var element in elements)
+                    {
+                        context.Elements.Remove(element);
+                    }
+                    context.Websites.Remove(website);
+
+                    context.SaveChanges();
+
+                    var errorObj = new
+                    {
+                        error = "Succesvol verwijderd"
+                    };
+                    return errorObj;
+                }
+                catch
+                {
+                    var errorObj = new
+                    {
+                        error = "Fout met verwijderen"
+                    };
+                    return errorObj;
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+    //Class
     }
+
+//namespace
 }

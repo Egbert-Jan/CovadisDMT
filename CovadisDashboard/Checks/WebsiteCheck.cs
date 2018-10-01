@@ -1,38 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using CovadisDashboard.Models;
 
 namespace CovadisDashboard.Checks
 {
     public class WebsiteCheck
     {
-
         public dynamic RequestWebsites()
         {
-            //ipAdress = ConfigurationManager.AppSettings["ApiUrl"];
-            string ipAdress = "http://localhost:51226";
-
-            object response;
+            var getJson = new getJson();
             
-            using (WebClient wc = new WebClient())
-            {
-                try
-                {
-                    // Add header with access token
-                    wc.Headers.Add("Accept", "application/json");
-
-                    response = wc.DownloadString(ipAdress + "/api/websites/");
-                }
-                catch (WebException we)
-                {
-                    response = null;
-                }
-
-                return response;
-            }
+            string ipAdress = "http://localhost:51226/api/websites";
+            
+            var Website = getJson._download_serialized_json_data<WebsiteModel>(ipAdress);
+            
+            return Website;
         }
 
     }

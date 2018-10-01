@@ -13,36 +13,29 @@
 
         <div class="row">
             <div class="col-sm-8">
-                @using (Html.BeginForm("Add", "Website", FormMethod.Post)){
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Name)
-                        @Html.TextBoxFor(m => m.Name, new { placeholder = "The name for the website goes here...", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Name)
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Url)
-                        @Html.TextBoxFor(m => m.Url, new { placeholder = "Your Url goes here...", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Url)
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Element1)
-                        @Html.TextBoxFor(m => m.Element1, new { placeholder = "Your first element goes here...", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Element1)
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Element2)
-                        @Html.TextBoxFor(m => m.Element2, new { placeholder = "Your second element goes here...", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Element2)
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Element3)
-                        @Html.TextBoxFor(m => m.Element3, new { placeholder = "Your third element goes here...", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Element3)
+                <form asp-action="Add" asp-controller="Website">
+                    <div id="items">
+                        <div class="form-group">
+                            <label for="Name"></label>
+                            <input name="Name" placeholder="Your name goes here..."
+                                   class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Url"></label>
+                            <input name="Url" placeholder="Your url goes here..."
+                                   class="form-control" required />
+                        </div>
+                        <div class="hidden">
+                            <input id="Elements" name="Elements" />
+                        </div>
                     </div>
                     <input type="submit" />
-                }
+                </form>
             </div>
+
             <div class="col-sm-4">
+                <p>Use this button to add up to 10 elemenst.</p>
+                <button type="button" id="addElement">Add Element</button>
             </div>
         </div>
     </div>

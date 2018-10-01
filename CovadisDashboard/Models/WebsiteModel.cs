@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CovadisDashboard.Models
@@ -12,17 +13,7 @@ namespace CovadisDashboard.Models
         [Required(ErrorMessage = "A url is required! You twat!")]
         [DisplayName("Url:")]
         public string Url { get; set; }
-
-        [Required(ErrorMessage = "All elements are required!")]
-        [DisplayName("Element 1:")]
-        public string Element1 { get; set; }
-
-        [Required(ErrorMessage = "All elements are required!")]
-        [DisplayName("Element 2:")]
-        public string Element2 { get; set; }
-
-        [Required(ErrorMessage = "All elements are required!")]
-        [DisplayName("Element 3:")]
-        public string Element3 { get; set; }
+        
+        public List<string> Elements { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CovadisDashboard.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace CovadisDashboard.Controllers
 {
@@ -11,14 +14,14 @@ namespace CovadisDashboard.Controllers
         {
             ViewData["Message"] = "I don't know what content will be displayed here, if any at all.";
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            ViewData["data"] = check.RequestWebsites();
+            //Checks.WebsiteCheck check = new Checks.WebsiteCheck();
+            //ViewData["data"] = check.RequestWebsites();
 
             return View();
         }
         
         // GET: /websites/{id}
-        [HttpGet("/website/view/{id:int}")]
+        [HttpGet("/website/{id:int}")]
         public IActionResult Index(string id)
         {
             ViewData["id"] = id;
@@ -29,7 +32,7 @@ namespace CovadisDashboard.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewData["Message"] = "Use this page to add a new website to the configuration.";
+            ViewData["Message"] = "Here you can update an existing websites configuration.";
 
             return View();
         }
@@ -50,17 +53,28 @@ namespace CovadisDashboard.Controllers
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Add(WebsiteModel model)
+        [HttpPost]
+        public IActionResult Add(int elements)
         {
-            if (!ModelState.IsValid)
+            List<string> Elements = new List<string>();
+            WebsiteModel Model = new WebsiteModel();
+
+            Model.Name = Request.Form["Name"];
+            Model.Url = Request.Form["Url"];
+            
+            for(int i = 1; i <= elements; i++)
             {
-                return View(model);
+                string counter = i.ToString();
+                string name = "Element" + i;
+                name = Request.Form[name];
+                Elements.Add(name);
             }
-            else
-            {
-                return Content($"The name: {model.Name}, your url: {model.Url}, the 1st: {model.Element1}, the 2nd: {model.Element2}, the last: {model.Element3}!");
-            }
+
+            Model.Elements = Elements;
+
+            string response = JsonConvert.SerializeObject(Model);
+
+            return Content($"{response}");
         }
     }
 }

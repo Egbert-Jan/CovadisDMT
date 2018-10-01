@@ -1,0 +1,24 @@
+﻿@model CovadisDashboard.Models.WebsiteModel;
+
+@{
+    ViewData["Title"] = "Add new check";
+}
+
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-11">
+
+        <h2>@ViewData["Title"]</h2>
+        <h3>@ViewData["Message"]</h3>
+        <p>
+            @ViewData["data"]
+
+            @{ 
+                if(ViewData["id"] != null)
+                {
+                    @ViewData["id"]
+                }
+            }
+        </p>
+        
+    </div>
+</div>

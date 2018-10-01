@@ -4,7 +4,7 @@ using System.Net;
 
 namespace CovadisDashboard.Checks
 {
-    public class getJson
+    public class GetJson
     {
         public T _download_serialized_json_data<T>(string url) where T : new()
         {
@@ -16,7 +16,10 @@ namespace CovadisDashboard.Checks
                 {
                     json_data = w.DownloadString(url);
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+
+                }
                 // if string with JSON data is not empty, deserialize it to class and return its instance 
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }

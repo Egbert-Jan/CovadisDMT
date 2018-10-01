@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CovadisDashboard.Controllers
 {
     public class WebsiteController : Controller
     {
+        // GETS //
+
         // GET: /websites/
         [HttpGet]
         public IActionResult Index()
@@ -15,20 +19,24 @@ namespace CovadisDashboard.Controllers
             ViewData["Message"] = "I don't know what content will be displayed here, if any at all.";
 
             //Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            //ViewData["data"] = check.RequestWebsites();
+            //ViewData["data"] = check.RequestWebsites("/websites");
 
             return View();
         }
         
-        // GET: /websites/{id}
+        // GET: /website/{id}
         [HttpGet("/website/{id:int}")]
-        public IActionResult Index(string id)
+        public IActionResult Index(int id)
         {
             ViewData["id"] = id;
+
+            //Checks.WebsiteCheck check = new Checks.WebsiteCheck();
+            //ViewData["data"] = check.RequestWebsites("/websites/" + id);
 
             return View();
         }
 
+        // GET: /website/add
         [HttpGet]
         public IActionResult Add()
         {
@@ -37,10 +45,12 @@ namespace CovadisDashboard.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Update()
+        // GET: /website/update/{id}
+        [HttpGet("/website/update/{id:int}")]
+        public IActionResult Update(int id)
         {
             ViewData["Message"] = "Here you can update an existing websites configuration.";
+            ViewData["id"] = id;
 
             return View();
         }
@@ -53,8 +63,12 @@ namespace CovadisDashboard.Controllers
             return View();
         }
 
+
+        //POSTS//
+
+        // POST: /website/add
         [HttpPost]
-        public IActionResult Add(int elements)
+        public async Task<IActionResult> Add(int elements)
         {
             List<ElementModel> Elements = new List<ElementModel>();
             WebsiteModel Model = new WebsiteModel();
@@ -73,9 +87,27 @@ namespace CovadisDashboard.Controllers
 
             Model.Elements = Elements;
 
-            string response = JsonConvert.SerializeObject(Model);
+            var json = JsonConvert.SerializeObject(Model);
 
-            return Content($"{response}");
+            var responseString = (String)null;
+
+            try
+            {
+                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", json);
+                responseString = await response.Content.ReadAsStringAsync();
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            //Just for testing, remove later
+            if(String.IsNullOrEmpty(responseString))
+            {
+                responseString = "Error submitting form data!";
+            }
+
+            return Content($"{responseString}");
         }
     }
 }

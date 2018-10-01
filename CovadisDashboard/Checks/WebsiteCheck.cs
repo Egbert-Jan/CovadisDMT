@@ -4,14 +4,14 @@ namespace CovadisDashboard.Checks
 {
     public class WebsiteCheck
     {
-        public dynamic RequestWebsites()
+        public dynamic RequestWebsites(string url)
         {
-            var getJson = new getJson();
-            
-            string ipAdress = "http://localhost:51226/api/websites";
-            
-            var Website = getJson._download_serialized_json_data<WebsiteModel>(ipAdress);
-            
+            var GetJson = new GetJson();
+            string apiUrl = "http://localhost:51226";
+            string requestUrl = apiUrl + url;
+
+            var Website = GetJson._download_serialized_json_data<WebsiteModel>(requestUrl);
+
             return Website;
         }
 

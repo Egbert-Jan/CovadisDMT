@@ -56,18 +56,19 @@ namespace CovadisDashboard.Controllers
         [HttpPost]
         public IActionResult Add(int elements)
         {
-            List<string> Elements = new List<string>();
+            List<ElementModel> Elements = new List<ElementModel>();
             WebsiteModel Model = new WebsiteModel();
 
-            Model.Name = Request.Form["Name"];
+            //Model.Name = Request.Form["Name"];
             Model.Url = Request.Form["Url"];
             
             for(int i = 1; i <= elements; i++)
             {
+                ElementModel elementModel = new ElementModel();
                 string counter = i.ToString();
                 string name = "Element" + i;
-                name = Request.Form[name];
-                Elements.Add(name);
+                elementModel.ElementName = Request.Form[name];
+                Elements.Add(elementModel);
             }
 
             Model.Elements = Elements;

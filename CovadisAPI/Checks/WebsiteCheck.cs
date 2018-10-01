@@ -17,7 +17,7 @@ namespace CovadisAPI.Checks
 
         public async Task<object> CheckWebsite(WebsitesDataModel website)
         {
-            //PAK ALLE ELEMENTEN BIJ DEZE WEBSITE
+            //haalt alle elementen op die bij deze website horen
             List<ElementsDataModel> elements;
             using (var context = new ApplicationDbContext())
             {
@@ -25,7 +25,7 @@ namespace CovadisAPI.Checks
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
-            // HAALT DE SITE OP EN CHECKT VOOR DE ELEMENTEN DIE IN elementsToCheck staan
+            // haalt de site op die werd mee gegeven in de website parameter
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -44,7 +44,7 @@ namespace CovadisAPI.Checks
 
                         };
                         
-                        //LOOPT DOOR DE elementsToCheck EN CHECKT OF DE ELEMENTEN IN DE OPGEHAALDE SITE STAAN
+                        //loopt door elke element die de website heeft en contoleert of dat die in de site voor komt
                         foreach (var element in elements)
                         {
 
@@ -57,7 +57,6 @@ namespace CovadisAPI.Checks
 
                                 };
                                 jsonwebsite.elementen.Add(elem);
-
                             }
                             else
                             {
@@ -68,9 +67,7 @@ namespace CovadisAPI.Checks
 
                                 };
                                 jsonwebsite.elementen.Add(elem);
-
                             }
-
                         }
                         
                         return jsonwebsite;

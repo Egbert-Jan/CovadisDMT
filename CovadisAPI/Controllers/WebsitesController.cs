@@ -35,6 +35,7 @@ namespace CovadisAPI.Controllers
                 }
             }
             
+            //Returnt het in JSON
             return JsonConvert.SerializeObject(checkedWebsites);
         }
 
@@ -49,8 +50,10 @@ namespace CovadisAPI.Controllers
 
             using(var context = new ApplicationDbContext())
             {
+                //Pakt een website bij dit ID
                 var website = context.Websites.Find(id);
 
+                //Controleert de site op elementen
                 try
                 {
                     return await check.CheckWebsite(website);
@@ -71,25 +74,23 @@ namespace CovadisAPI.Controllers
 
 
         // POST api/website
-
         [HttpPost]
         public void Post([FromBody] WebsitesDataModel nieuweWebsite)
         {
             //voegt een service toe
             using (var context = new ApplicationDbContext())
             {
+                //Maakt een nieuwe website aan en voegt hem toe aan de context
                 var website = new WebsitesDataModel()
                 {
                     Url = nieuweWebsite.Url,
-                    //Elements = nieuweWebsite.Elements
                 };
                 context.Websites.Add(website);
 
 
-                //IK HEB DE ELEMENTEN EN DE WEBSITE ID WAAR ZE AAN TOEGEVOEGD MOETEN WORDEN
+                //Voegt de elementen toe aan de site die net toegevoegt is aan de context
                 foreach(var x in nieuweWebsite.Elements)
                 {
-                    Debug.WriteLine("test: " + x.ElementName);
                     context.Elements.Add(new ElementsDataModel()
                     {
                         ElementName = x.ElementName,
@@ -97,13 +98,10 @@ namespace CovadisAPI.Controllers
                     });
                 }
 
+
                 context.SaveChanges();
             }
         }
-
-
-
-
 
 
     }

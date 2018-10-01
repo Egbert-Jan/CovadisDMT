@@ -39,6 +39,7 @@ namespace CovadisAPI.Checks
                         
                         var jsonwebsite = new
                         {
+                            websiteID = website.WebsiteID,
                             url = website.Url,
                             elementen = new List<object> { },
 
@@ -52,9 +53,9 @@ namespace CovadisAPI.Checks
                             {
                                 var elem = new
                                 {
+                                    elementID = element.ElementID,
                                     elementName = element.ElementName,
                                     elementStatus = "fout"
-
                                 };
                                 jsonwebsite.elementen.Add(elem);
                             }
@@ -62,9 +63,9 @@ namespace CovadisAPI.Checks
                             {
                                 var elem = new
                                 {
+                                    elementID = element.ElementID,
                                     elementName = element.ElementName,
                                     elementStatus = "goed"
-
                                 };
                                 jsonwebsite.elementen.Add(elem);
                             }

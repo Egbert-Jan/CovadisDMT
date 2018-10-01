@@ -15,19 +15,15 @@ namespace CovadisAPI.Checks
     public class WebsiteCheck
     {
 
-        public async Task<List<string>> CheckWebsite(WebsitesDataModel website)
+        public async Task<object> CheckWebsite(WebsitesDataModel website)
         {
-            List<string> websiteData = new List<string> { };
-
-            //PAK ALLE ELEMENTEN
-            IList<ElementsDataModel> elements;
+            //PAK ALLE ELEMENTEN BIJ DEZE WEBSITE
+            List<ElementsDataModel> elements;
             using (var context = new ApplicationDbContext())
             {
                 elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
-
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
-
 
             // HAALT DE SITE OP EN CHECKT VOOR DE ELEMENTEN DIE IN elementsToCheck staan
             try
@@ -40,32 +36,62 @@ namespace CovadisAPI.Checks
 
                     if (data != null)
                     {
-                        websiteData.Add(website.Url);
+                        
+                        var jsonwebsite = new
+                        {
+                            url = website.Url,
+                            elementen = new List<object> { },
 
+                        };
+                        
                         //LOOPT DOOR DE elementsToCheck EN CHECKT OF DE ELEMENTEN IN DE OPGEHAALDE SITE STAAN
                         foreach (var element in elements)
                         {
-                            Debug.WriteLine(element.Website.Url);
 
                             if (!data.Contains(element.ElementName))
                             {
-                                websiteData.Add("Fout");
+                                var elem = new
+                                {
+                                    elementName = element.ElementName,
+                                    elementStatus = "fout"
+
+                                };
+                                jsonwebsite.elementen.Add(elem);
+
                             }
                             else
                             {
-                                websiteData.Add("Goed");
+                                var elem = new
+                                {
+                                    elementName = element.ElementName,
+                                    elementStatus = "goed"
+
+                                };
+                                jsonwebsite.elementen.Add(elem);
+
                             }
+
                         }
+                        
+                        return jsonwebsite;
                     }
-
-
-                    //RETURNT EEN ARRAY MET DE WEBSITE URL EN PER ELEMENT OF HET GOED OF FOUT IS
-                    return websiteData;
+                    else
+                    {
+                        var errorObj = new
+                        {
+                            error = "Error: Waarschijnlijk is data null"
+                        };
+                        return errorObj;
+                    }
                 }
             }
             catch
             {
-                return new List<string> { "Error met ophalen van url. Dit kan zijn dat er geen https voor staat" };
+                var errorObj = new
+                {
+                    error = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat"
+                };
+                return errorObj;
             }
         }
     }

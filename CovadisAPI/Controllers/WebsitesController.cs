@@ -2,6 +2,7 @@
 using CovadisAPI.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,9 +21,9 @@ namespace CovadisAPI.Controllers
 
         // GET api/websites
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<List<string>>>> GetAsync()
+        public async Task<ActionResult<string>> GetAsync()
         {
-            List<List<string>> checkedWebsites = new List<List<string>> { };
+            List<object> checkedWebsites = new List<object> { };
 
             WebsiteCheck check = new WebsiteCheck();
             using (var context = new ApplicationDbContext())
@@ -34,7 +35,7 @@ namespace CovadisAPI.Controllers
                 }
             }
             
-            return checkedWebsites;
+            return JsonConvert.SerializeObject(checkedWebsites);
         }
 
 
@@ -51,7 +52,8 @@ namespace CovadisAPI.Controllers
 
                 try
                 {
-                    return await check.CheckWebsite(website);
+                    //return await check.CheckWebsite(website);
+                    return new List<string> { };
                 }
                 catch
                 {

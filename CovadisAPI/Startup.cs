@@ -93,11 +93,11 @@ namespace CovadisAPI
         {
             using (var context = new ApplicationDbContext())
             {
-                ElementsDataModel element1 = new ElementsDataModel { ElementName = "Hello" };
+                ElementsDataModel element1 = new ElementsDataModel { Name = "Hello" };
 
-                ElementsDataModel element2 = new ElementsDataModel { ElementName = "Hallo" };
+                ElementsDataModel element2 = new ElementsDataModel { Name = "Hallo" };
 
-                ElementsDataModel element3 = new ElementsDataModel { ElementName = "Bonjour" };
+                ElementsDataModel element3 = new ElementsDataModel { Name = "Bonjour" };
 
                 context.Websites.Add(new WebsitesDataModel()
                 {
@@ -106,11 +106,11 @@ namespace CovadisAPI
                 });
 
 
-                ElementsDataModel element11 = new ElementsDataModel { ElementName = "Hello" };
+                ElementsDataModel element11 = new ElementsDataModel { Name = "Hello" };
 
-                ElementsDataModel element22 = new ElementsDataModel { ElementName = "Halo" };
+                ElementsDataModel element22 = new ElementsDataModel { Name = "Halo" };
 
-                ElementsDataModel element33 = new ElementsDataModel { ElementName = "Bonjour" };
+                ElementsDataModel element33 = new ElementsDataModel { Name = "Bonjour" };
 
                 context.Websites.Add(new WebsitesDataModel()
                 {

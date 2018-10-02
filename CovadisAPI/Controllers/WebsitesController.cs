@@ -3,12 +3,8 @@ using CovadisAPI.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CovadisAPI.Controllers
@@ -43,20 +39,20 @@ namespace CovadisAPI.Controllers
 
 
         // GET api/websites/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetAsync(int id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<object>> GetAsync(int Id)
         {
             WebsiteCheck check = new WebsiteCheck();
 
             using(var context = new ApplicationDbContext())
             {
                 //Pakt een website bij dit ID
-                var website = context.Websites.Find(id);
+                var website = context.Websites.Find(Id);
 
                 //Controleert de site op elementen
                 try
                 {
-                    return await check.CheckWebsite(website);
+                    return JsonConvert.SerializeObject(await check.CheckWebsite(website));
                 }
                 catch
                 {
@@ -93,7 +89,7 @@ namespace CovadisAPI.Controllers
                 {
                     context.Elements.Add(new ElementsDataModel()
                     {
-                        ElementName = x.ElementName,
+                        Name = x.Name,
                         Website = website
                     });
                 }
@@ -113,7 +109,7 @@ namespace CovadisAPI.Controllers
                 {
                     var website = context.Websites.Find(id);
 
-                    List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                    List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
 
                     foreach (var element in elements)
                     {
@@ -150,8 +146,8 @@ namespace CovadisAPI.Controllers
         {
             using (var context = new ApplicationDbContext())
             {
-                var oldConfig = context.Websites.Find(website.WebsiteID);
-                List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                var oldConfig = context.Websites.Find(website.Id);
+                List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
 
                 if(oldConfig != null)
                 {

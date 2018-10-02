@@ -1,13 +1,9 @@
 ﻿using CovadisAPI.Data;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CovadisAPI.Data;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 
 namespace CovadisAPI.Checks
@@ -21,7 +17,7 @@ namespace CovadisAPI.Checks
             List<ElementsDataModel> elements;
             using (var context = new ApplicationDbContext())
             {
-                elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
@@ -39,9 +35,9 @@ namespace CovadisAPI.Checks
                         
                         var jsonwebsite = new
                         {
-                            websiteID = website.WebsiteID,
-                            url = website.Url,
-                            elementen = new List<object> { },
+                            website.Id,
+                            website.Url,
+                            Elements = new List<object> { },
 
                         };
                         
@@ -49,25 +45,25 @@ namespace CovadisAPI.Checks
                         foreach (var element in elements)
                         {
 
-                            if (!data.Contains(element.ElementName))
+                            if (!data.Contains(element.Name))
                             {
                                 var elem = new
                                 {
-                                    elementID = element.ElementID,
-                                    elementName = element.ElementName,
-                                    elementStatus = "fout"
+                                    element.Id,
+                                    element.Name,
+                                    Status = "fout"
                                 };
-                                jsonwebsite.elementen.Add(elem);
+                                jsonwebsite.Elements.Add(elem);
                             }
                             else
                             {
                                 var elem = new
                                 {
-                                    elementID = element.ElementID,
-                                    elementName = element.ElementName,
-                                    elementStatus = "goed"
+                                    element.Id,
+                                    element.Name,
+                                    Status = "goed"
                                 };
-                                jsonwebsite.elementen.Add(elem);
+                                jsonwebsite.Elements.Add(elem);
                             }
                         }
                         

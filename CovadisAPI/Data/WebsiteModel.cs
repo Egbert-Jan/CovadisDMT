@@ -25,6 +25,8 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Name { get; set; }
 
+        public string Status { get; set; }
+
         public WebsiteModel Website { get; set; }
     }
 }

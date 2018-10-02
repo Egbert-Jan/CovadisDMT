@@ -32,13 +32,13 @@ namespace CovadisAPI.Checks
 
                     if (data != null)
                     {
-                        
-                        var jsonwebsite = new
-                        {
-                            website.Id,
-                            website.Url,
-                            Elements = new List<object> { },
 
+
+                        var web = new WebsiteModel
+                        {
+                            Id = website.Id,
+                            Url = website.Url,
+                            Elements = new List<ElementModel> { }
                         };
                         
                         //loopt door elke element die de website heeft en contoleert of dat die in de site voor komt
@@ -47,27 +47,28 @@ namespace CovadisAPI.Checks
 
                             if (!data.Contains(element.Name))
                             {
-                                var elem = new
+                                var elem = new ElementModel
                                 {
-                                    element.Id,
-                                    element.Name,
-                                    Status = "fout"
+                                    Id = element.Id,
+                                    Name = element.Name,
+                                    Status = "INCORRECT"
                                 };
-                                jsonwebsite.Elements.Add(elem);
+                                
+                                web.Elements.Add(elem);
                             }
                             else
                             {
-                                var elem = new
+                                var elem = new ElementModel
                                 {
-                                    element.Id,
-                                    element.Name,
-                                    Status = "goed"
+                                    Id = element.Id,
+                                    Name = element.Name,
+                                    Status = "CORRECT"
                                 };
-                                jsonwebsite.Elements.Add(elem);
+                                web.Elements.Add(elem);
                             }
                         }
                         
-                        return jsonwebsite;
+                        return web;
                     }
                     else
                     {

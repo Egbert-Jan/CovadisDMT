@@ -144,6 +144,35 @@ namespace CovadisAPI.Controllers
 
 
 
+        // PUT api/websites/5
+        [HttpPut]
+        public void Put([FromBody] WebsitesDataModel website)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var oldConfig = context.Websites.Find(website.WebsiteID);
+                List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+
+                if(oldConfig != null)
+                {
+                    oldConfig.Url = website.Url;
+
+                    foreach (var element in elements)
+                    {
+                        context.Elements.Remove(element);
+                    }
+
+                    oldConfig.Elements = website.Elements;
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+
+
+
+
 
 
 

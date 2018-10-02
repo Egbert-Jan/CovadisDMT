@@ -10,9 +10,12 @@ namespace CovadisAPI.Checks
 {
     public class WebsiteCheck
     {
+        ErrorModel error = new ErrorModel();
 
         public async Task<object> CheckWebsite(WebsiteModel website)
         {
+            
+
             //haalt alle elementen op die bij deze website horen
             List<ElementModel> elements;
             using (var context = new ApplicationDbContext())
@@ -72,21 +75,15 @@ namespace CovadisAPI.Checks
                     }
                     else
                     {
-                        var errorObj = new
-                        {
-                            error = "Error: Waarschijnlijk is data null"
-                        };
-                        return errorObj;
+                        error.Message = "Error: Waarschijnlijk is data null";
+                        return error;
                     }
                 }
             }
             catch
             {
-                var errorObj = new
-                {
-                    error = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat"
-                };
-                return errorObj;
+                error.Message = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat";
+                return error;
             }
         }
     }

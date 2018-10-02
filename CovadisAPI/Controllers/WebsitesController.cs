@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace CovadisAPI.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class WebsitesController : ControllerBase
     {
+
+        ErrorModel error = new ErrorModel();
 
         // GET api/websites
         [HttpGet]
@@ -56,12 +57,8 @@ namespace CovadisAPI.Controllers
                 }
                 catch
                 {
-                    var errorObj = new
-                    {
-                        error = "Fout met het ophalen. Waarschijnlijk bestaat de website niet met dit ID"
-                    };
-
-                    return errorObj;
+                    error.Message = "Fout met het ophalen. Waarschijnlijk bestaat de website niet met dit ID";
+                    return error;
                 }
             }
         }
@@ -119,19 +116,12 @@ namespace CovadisAPI.Controllers
 
                     context.SaveChanges();
 
-                    var errorObj = new
-                    {
-                        error = "Succesvol verwijderd"
-                    };
-                    return errorObj;
+                    return "Succeed";
                 }
                 catch
                 {
-                    var errorObj = new
-                    {
-                        error = "Fout met verwijderen"
-                    };
-                    return errorObj;
+                    error.Message = "Fout met verwijderen";
+                    return error;
                 }
             }
         }

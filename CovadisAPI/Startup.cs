@@ -93,29 +93,29 @@ namespace CovadisAPI
         {
             using (var context = new ApplicationDbContext())
             {
-                ElementsDataModel element1 = new ElementsDataModel { Name = "Hello" };
+                ElementModel element1 = new ElementModel { Name = "Hello" };
 
-                ElementsDataModel element2 = new ElementsDataModel { Name = "Hallo" };
+                ElementModel element2 = new ElementModel { Name = "Hallo" };
 
-                ElementsDataModel element3 = new ElementsDataModel { Name = "Bonjour" };
+                ElementModel element3 = new ElementModel { Name = "Bonjour" };
 
-                context.Websites.Add(new WebsitesDataModel()
+                context.Websites.Add(new WebsiteModel()
                 {
                     Url = "https://gms.azurewebsites.net/",
-                    Elements = new List<ElementsDataModel> { element1, element2, element3 }
+                    Elements = new List<ElementModel> { element1, element2, element3 }
                 });
 
 
-                ElementsDataModel element11 = new ElementsDataModel { Name = "Hello" };
+                ElementModel element11 = new ElementModel { Name = "Hello" };
 
-                ElementsDataModel element22 = new ElementsDataModel { Name = "Halo" };
+                ElementModel element22 = new ElementModel { Name = "Halo" };
 
-                ElementsDataModel element33 = new ElementsDataModel { Name = "Bonjour" };
+                ElementModel element33 = new ElementModel { Name = "Bonjour" };
 
-                context.Websites.Add(new WebsitesDataModel()
+                context.Websites.Add(new WebsiteModel()
                 {
                     Url = "https://gms.azurewebsites.net/",
-                    Elements = new List<ElementsDataModel> { element11, element22, element33 }
+                    Elements = new List<ElementModel> { element11, element22, element33 }
                 });
 
                 context.SaveChanges();

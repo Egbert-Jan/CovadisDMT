@@ -11,10 +11,10 @@ namespace CovadisAPI.Checks
     public class WebsiteCheck
     {
 
-        public async Task<object> CheckWebsite(WebsitesDataModel website)
+        public async Task<object> CheckWebsite(WebsiteModel website)
         {
             //haalt alle elementen op die bij deze website horen
-            List<ElementsDataModel> elements;
+            List<ElementModel> elements;
             using (var context = new ApplicationDbContext())
             {
                 elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();

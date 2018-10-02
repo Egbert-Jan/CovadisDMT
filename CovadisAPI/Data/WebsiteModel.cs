@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CovadisAPI.Data
 {
-    public class WebsitesDataModel
+    public class WebsiteModel
     {
         [Key]
         public int Id { get; set; }
@@ -12,11 +12,11 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Url { get; set; }
 
-        public IList<ElementsDataModel> Elements { get; set; }
+        public IList<ElementModel> Elements { get; set; }
     }
 
 
-    public class ElementsDataModel
+    public class ElementModel
     {
         [Key]
         public int Id { get; set; }
@@ -25,6 +25,6 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Name { get; set; }
 
-        public WebsitesDataModel Website { get; set; }
+        public WebsiteModel Website { get; set; }
     }
 }

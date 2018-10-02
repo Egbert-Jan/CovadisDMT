@@ -12,6 +12,10 @@ body {
     padding-right: 15px;
 }
 
+.table-striped tbody tr td{
+    padding-left: 15px;
+}
+
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;

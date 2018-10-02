@@ -10,10 +10,16 @@ namespace CovadisDashboard.Models
         //[DisplayName("Name:")]
         //public string Name { get; set; }
 
-        [Required(ErrorMessage = "A url is required! You twat!")]
+        public int websiteID { get; set; }
+
         [DisplayName("Url:")]
-        public string Url { get; set; }
-        
-        public List<ElementModel> Elements { get; set; }
+        public string url { get; set; }
+
+        public List<ElementModel> elementen { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}", url, elementen);
+        }
     }
 }

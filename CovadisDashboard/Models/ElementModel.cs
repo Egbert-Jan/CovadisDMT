@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CovadisDashboard.Models
+﻿namespace CovadisDashboard.Models
 {
     public class ElementModel
     {
-        public string ElementName { get; set; }
-
+        public int elementID { get; set; }
+        public string elementName { get; set; }
+        public string elementStatus { get; set; }
     }
 }

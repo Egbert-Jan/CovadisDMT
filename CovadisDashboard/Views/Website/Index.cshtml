@@ -1,5 +1,4 @@
-﻿@model CovadisDashboard.Models.WebsiteModel;
-
+﻿@model List<WebsiteModel>;
 @{
     ViewData["Title"] = "Add new check";
 }
@@ -9,16 +8,40 @@
 
         <h2>@ViewData["Title"]</h2>
         <h3>@ViewData["Message"]</h3>
-        <p>
-            @ViewData["data"]
 
-            @{ 
-                if(ViewData["id"] != null)
+        <table class="table-striped">
+            <tr>
+                <th class="col-sm-6">Url</th>
+                <th class="col-sm-6">Elementen</th>
+            </tr>
+            @foreach (var row in Model)
+            {
+                <tr>
+                    <td>@row.url <br /></td>
+                    <td>
+                        @{
+                            foreach (var element in row.elementen)
+                            {
+
+                                @element.elementName <span>-</span>
+                                @element.elementStatus<span> || </span>
+
+                            }
+                        }
+                    </td>
+
+                </tr>
+            }
+        </table>
+
+        <p>
+            @{
+                if (ViewData["id"] != null)
                 {
                     @ViewData["id"]
                 }
             }
         </p>
-        
+
     </div>
 </div>

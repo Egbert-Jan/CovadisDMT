@@ -1,4 +1,5 @@
 ﻿using CovadisDashboard.Models;
+using System.Collections.Generic;
 
 namespace CovadisDashboard.Checks
 {
@@ -10,7 +11,7 @@ namespace CovadisDashboard.Checks
             string apiUrl = "http://localhost:51226";
             string requestUrl = apiUrl + url;
 
-            var Website = GetJson._download_serialized_json_data<WebsiteModel>(requestUrl);
+            var Website = GetJson._download_serialized_json_data<List<WebsiteModel>>(requestUrl);
 
             return Website;
         }

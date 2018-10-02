@@ -16,12 +16,12 @@ namespace CovadisDashboard.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ViewData["Message"] = "I don't know what content will be displayed here, if any at all.";
+            ViewData["Message"] = "This is an overview of all the websites that are getting checked.";
 
-            //Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            //ViewData["data"] = check.RequestWebsites("/websites");
+            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
+            List<WebsiteModel> Websites = check.RequestWebsites("/api/websites");
 
-            return View();
+            return View(Websites);
         }
         
         // GET: /website/{id}
@@ -40,7 +40,7 @@ namespace CovadisDashboard.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewData["Message"] = "Here you can update an existing websites configuration.";
+            ViewData["Message"] = "Here you can add a websites configuration.";
 
             return View();
         }
@@ -74,18 +74,18 @@ namespace CovadisDashboard.Controllers
             WebsiteModel Model = new WebsiteModel();
 
             //Model.Name = Request.Form["Name"];
-            Model.Url = Request.Form["Url"];
+            Model.url = Request.Form["Url"];
             
             for(int i = 1; i <= elements; i++)
             {
                 ElementModel elementModel = new ElementModel();
                 string counter = i.ToString();
                 string name = "Element" + i;
-                elementModel.ElementName = Request.Form[name];
+                elementModel.elementName = Request.Form[name];
                 Elements.Add(elementModel);
             }
 
-            Model.Elements = Elements;
+            Model.elementen = Elements;
 
             var json = JsonConvert.SerializeObject(Model);
 

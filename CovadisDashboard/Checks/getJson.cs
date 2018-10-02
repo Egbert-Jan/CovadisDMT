@@ -20,6 +20,7 @@ namespace CovadisDashboard.Checks
                 {
 
                 }
+
                 // if string with JSON data is not empty, deserialize it to class and return its instance 
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }

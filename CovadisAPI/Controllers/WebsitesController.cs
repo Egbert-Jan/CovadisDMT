@@ -3,21 +3,18 @@ using CovadisAPI.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CovadisAPI.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class WebsitesController : ControllerBase
     {
+
+        ErrorModel error = new ErrorModel();
 
         // GET api/websites
         [HttpGet]
@@ -43,29 +40,25 @@ namespace CovadisAPI.Controllers
 
 
         // GET api/websites/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetAsync(int id)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<object>> GetAsync(int Id)
         {
             WebsiteCheck check = new WebsiteCheck();
 
             using(var context = new ApplicationDbContext())
             {
                 //Pakt een website bij dit ID
-                var website = context.Websites.Find(id);
+                var website = context.Websites.Find(Id);
 
                 //Controleert de site op elementen
                 try
                 {
-                    return await check.CheckWebsite(website);
+                    return JsonConvert.SerializeObject(await check.CheckWebsite(website));
                 }
                 catch
                 {
-                    var errorObj = new
-                    {
-                        error = "Fout met het ophalen. Waarschijnlijk bestaat de website niet met dit ID"
-                    };
-
-                    return errorObj;
+                    error.Message = "Fout met het ophalen. Waarschijnlijk bestaat de website niet met dit ID";
+                    return error;
                 }
             }
         }
@@ -75,13 +68,13 @@ namespace CovadisAPI.Controllers
 
         // POST api/website
         [HttpPost]
-        public void Post([FromBody] WebsitesDataModel nieuweWebsite)
+        public void Post([FromBody] WebsiteModel nieuweWebsite)
         {
             //voegt een service toe
             using (var context = new ApplicationDbContext())
             {
                 //Maakt een nieuwe website aan en voegt hem toe aan de context
-                var website = new WebsitesDataModel()
+                var website = new WebsiteModel()
                 {
                     Url = nieuweWebsite.Url,
                 };
@@ -91,9 +84,9 @@ namespace CovadisAPI.Controllers
                 //Voegt de elementen toe aan de site die net toegevoegt is aan de context
                 foreach(var x in nieuweWebsite.Elements)
                 {
-                    context.Elements.Add(new ElementsDataModel()
+                    context.Elements.Add(new ElementModel()
                     {
-                        ElementName = x.ElementName,
+                        Name = x.Name,
                         Website = website
                     });
                 }
@@ -113,7 +106,7 @@ namespace CovadisAPI.Controllers
                 {
                     var website = context.Websites.Find(id);
 
-                    List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                    List<ElementModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
 
                     foreach (var element in elements)
                     {
@@ -123,19 +116,12 @@ namespace CovadisAPI.Controllers
 
                     context.SaveChanges();
 
-                    var errorObj = new
-                    {
-                        error = "Succesvol verwijderd"
-                    };
-                    return errorObj;
+                    return "Succeed";
                 }
                 catch
                 {
-                    var errorObj = new
-                    {
-                        error = "Fout met verwijderen"
-                    };
-                    return errorObj;
+                    error.Message = "Fout met verwijderen";
+                    return error;
                 }
             }
         }
@@ -146,12 +132,12 @@ namespace CovadisAPI.Controllers
 
         // PUT api/websites/5
         [HttpPut]
-        public void Put([FromBody] WebsitesDataModel website)
+        public void Put([FromBody] WebsiteModel website)
         {
             using (var context = new ApplicationDbContext())
             {
-                var oldConfig = context.Websites.Find(website.WebsiteID);
-                List<ElementsDataModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                var oldConfig = context.Websites.Find(website.Id);
+                List<ElementModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
 
                 if(oldConfig != null)
                 {

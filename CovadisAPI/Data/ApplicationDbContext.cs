@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CovadisAPI.Data
 {
@@ -11,9 +7,8 @@ namespace CovadisAPI.Data
 
         //De tables
         public DbSet<ServicesDataModel> Services { get; set; }
-        public DbSet<WebsitesDataModel> Websites { get; set; }
-        public DbSet<ElementsDataModel> Elements { get; set; }
-        //public DbSet<WebsiteElements> WebsiteElements { get; set; }
+        public DbSet<WebsiteModel> Websites { get; set; }
+        public DbSet<ElementModel> Elements { get; set; }
 
         public ApplicationDbContext()
         {

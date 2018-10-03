@@ -1,27 +1,26 @@
 ﻿using CovadisAPI.Data;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CovadisAPI.Data;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 
 namespace CovadisAPI.Checks
 {
     public class WebsiteCheck
     {
+        ErrorModel error = new ErrorModel();
 
-        public async Task<object> CheckWebsite(WebsitesDataModel website)
+        public async Task<object> CheckWebsite(WebsiteModel website)
         {
+            
+
             //haalt alle elementen op die bij deze website horen
-            List<ElementsDataModel> elements;
+            List<ElementModel> elements;
             using (var context = new ApplicationDbContext())
             {
-                elements = context.Elements.Include(e => e.Website).Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
+                elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
                 //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
@@ -36,60 +35,55 @@ namespace CovadisAPI.Checks
 
                     if (data != null)
                     {
-                        
-                        var jsonwebsite = new
-                        {
-                            websiteID = website.WebsiteID,
-                            url = website.Url,
-                            elementen = new List<object> { },
 
+
+                        var web = new WebsiteModel
+                        {
+                            Id = website.Id,
+                            Url = website.Url,
+                            Elements = new List<ElementModel> { }
                         };
                         
                         //loopt door elke element die de website heeft en contoleert of dat die in de site voor komt
                         foreach (var element in elements)
                         {
 
-                            if (!data.Contains(element.ElementName))
+                            if (!data.Contains(element.Name))
                             {
-                                var elem = new
+                                var elem = new ElementModel
                                 {
-                                    elementID = element.ElementID,
-                                    elementName = element.ElementName,
-                                    elementStatus = "fout"
+                                    Id = element.Id,
+                                    Name = element.Name,
+                                    Status = "INCORRECT"
                                 };
-                                jsonwebsite.elementen.Add(elem);
+                                
+                                web.Elements.Add(elem);
                             }
                             else
                             {
-                                var elem = new
+                                var elem = new ElementModel
                                 {
-                                    elementID = element.ElementID,
-                                    elementName = element.ElementName,
-                                    elementStatus = "goed"
+                                    Id = element.Id,
+                                    Name = element.Name,
+                                    Status = "CORRECT"
                                 };
-                                jsonwebsite.elementen.Add(elem);
+                                web.Elements.Add(elem);
                             }
                         }
                         
-                        return jsonwebsite;
+                        return web;
                     }
                     else
                     {
-                        var errorObj = new
-                        {
-                            error = "Error: Waarschijnlijk is data null"
-                        };
-                        return errorObj;
+                        error.Message = "Error: Waarschijnlijk is data null";
+                        return error;
                     }
                 }
             }
             catch
             {
-                var errorObj = new
-                {
-                    error = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat"
-                };
-                return errorObj;
+                error.Message = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat";
+                return error;
             }
         }
     }

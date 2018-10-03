@@ -1,18 +1,20 @@
 ﻿using CovadisDashboard.Models;
+using System.Collections.Generic;
 
 namespace CovadisDashboard.Checks
 {
-    public class WebsiteCheck
+    public class WebsitesCheck
     {
         public dynamic RequestWebsites(string url)
         {
-            GetJson GetJson = new GetJson();
+            var GetJson = new GetJson();
             string apiUrl = "http://localhost:51226/api";
             string requestUrl = apiUrl + url;
 
-            var Website = GetJson._download_serialized_json_data<WebsiteModel>(requestUrl);
+            var Website = GetJson._download_serialized_json_data<List<WebsiteModel>>(requestUrl);
 
             return Website;
         }
+
     }
 }

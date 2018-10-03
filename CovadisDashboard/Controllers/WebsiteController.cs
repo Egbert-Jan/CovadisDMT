@@ -12,28 +12,28 @@ namespace CovadisDashboard.Controllers
     {
         // GETS //
 
-        // GET: /websites/
+        // GET: /websites
         [HttpGet]
         public IActionResult Index()
         {
             ViewData["Message"] = "This is an overview of all the websites that are getting checked.";
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            List<WebsiteModel> Websites = check.RequestWebsites("/api/websites");
+            Checks.WebsitesCheck check = new Checks.WebsitesCheck();
+            List<WebsiteModel> Websites = check.RequestWebsites("/websites");
 
             return View(Websites);
         }
         
-        // GET: /website/{id}
-        [HttpGet("/website/{id:int}")]
-        public IActionResult Index(int id)
+        // GET: /website/details/{id}
+        [HttpGet("/website/details/{id:int}")]
+        public IActionResult Details(int id)
         {
             ViewData["id"] = id;
 
-            //Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            //ViewData["data"] = check.RequestWebsites("/websites/" + id);
+            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
+            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
 
-            return View();
+            return View(Model);
         }
 
         // GET: /website/add
@@ -46,25 +46,22 @@ namespace CovadisDashboard.Controllers
         }
 
         // GET: /website/update/{id}
-        [HttpGet("/website/update/{id:int}")]
+        [HttpGet]
+        [Route("/website/update/{id:int}")]
         public IActionResult Update(int id)
         {
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
-            return View();
+            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
+
+            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
+            
+            return View(Model);
         }
+        
 
-        [HttpGet]
-        public IActionResult Delete()
-        {
-            ViewData["Message"] = "Here you can delete an existing websites configuration. Just be carefull it's not the wrong one!";
-
-            return View();
-        }
-
-
-        //POSTS//
+        // POSTS //
 
         // POST: /website/add
         [HttpPost]
@@ -73,27 +70,25 @@ namespace CovadisDashboard.Controllers
             List<ElementModel> Elements = new List<ElementModel>();
             WebsiteModel Model = new WebsiteModel();
 
-            //Model.Name = Request.Form["Name"];
-            Model.url = Request.Form["Url"];
+            Model.Name = Request.Form["Name"];
+            Model.Url = Request.Form["Url"];
             
             for(int i = 1; i <= elements; i++)
             {
                 ElementModel elementModel = new ElementModel();
                 string counter = i.ToString();
                 string name = "Element" + i;
-                elementModel.elementName = Request.Form[name];
+                elementModel.Name = Request.Form[name];
                 Elements.Add(elementModel);
             }
 
-            Model.elementen = Elements;
-
-            var json = JsonConvert.SerializeObject(Model);
+            Model.Elements = Elements;
 
             var responseString = (String)null;
 
             try
             {
-                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", json);
+                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", Model);
                 responseString = await response.Content.ReadAsStringAsync();
             }
             catch(Exception e)
@@ -101,13 +96,77 @@ namespace CovadisDashboard.Controllers
 
             }
 
-            //Just for testing, remove later
-            if(String.IsNullOrEmpty(responseString))
+            //return Content($"{responseString}");
+            return Redirect("/website");
+        }
+
+
+        // PUTS //
+        // PUT: /website/update/{id}
+        [HttpPost("/website/update/{id:int}")]
+        public async Task<IActionResult> Update(WebsiteModel Model, int elements, int id)
+        {
+            List<ElementModel> Elements = new List<ElementModel>();
+            
+            Model.Name = Request.Form["Name"];
+            Model.Url = Request.Form["Url"];
+
+            for (int i = 1; i <= elements; i++)
             {
-                responseString = "Error submitting form data!";
+                ElementModel elementModel = new ElementModel();
+                string counter = i.ToString();
+                string name = "Element" + i;
+                string elementId = "Element" + i + "Id";
+                elementModel.Name = Request.Form[name];
+                elementId = Request.Form[name + "Id"];
+                elementModel.Id = int.Parse(elementId);
+                Elements.Add(elementModel);
             }
 
+            Model.Elements = Elements;
+            
+            var responseString = (String)null;
+
+            try
+            {
+                var response = await Startup.client.PutAsJsonAsync("http://localhost:51226/api/websites", Model);
+                responseString = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+
+            }
+            
             return Content($"{responseString}");
         }
+
+
+        // DELETES //
+        // DELETE: /website/delete/{id}
+        [HttpPost("/website/delete/{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            string responseMessage = null;
+
+            try
+            {
+                var response = await Startup.client.DeleteAsync("http://localhost:51226/api/websites/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    responseMessage = (response.Content.ReadAsAsync<string>().Result);
+                }
+                else
+                {
+                    responseMessage = (response.StatusCode.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return Redirect("/website");
+        }
+
     }
 }

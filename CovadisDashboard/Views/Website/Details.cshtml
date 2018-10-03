@@ -1,0 +1,35 @@
+﻿@model WebsiteModel
+
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-11">
+
+        <h2>@ViewData["Title"]</h2>
+        <h3>@ViewData["Message"]</h3>
+
+        <table class="table-striped">
+            <tr>
+                <th class="col-sm-5">Url</th>
+                <th class="col-sm-6">Elementen</th>
+                <th class="col-sm-1">Delete</th>
+            </tr>
+            <tr>
+                <td>@Model.Url <br /></td>
+                <td>
+                    @{
+                        foreach (var element in Model.Elements)
+                        {
+
+                            @element.Name <span>-</span>
+                            @element.Status<span> || </span>
+
+                        }
+                    }
+                </td>
+                <td>
+                    <button id="@Model.Id" class="deleteButton btn btn-danger">Delete</button>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>

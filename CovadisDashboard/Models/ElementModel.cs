@@ -2,8 +2,9 @@
 {
     public class ElementModel
     {
-        public int elementID { get; set; }
-        public string elementName { get; set; }
-        public string elementStatus { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public string Website { get; set; }
     }
 }

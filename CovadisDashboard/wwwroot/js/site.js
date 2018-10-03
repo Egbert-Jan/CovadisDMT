@@ -25,5 +25,19 @@ $(document).ready(function () {
 
     $(wrapper).on("click", ".remove_field", function (e) { //user click on remove field
         e.preventDefault(); $(this).parent('div').remove(); x--;
-    })
+        $("#Elements").val(x);
+    });
+    
+    $(".deleteButton").click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr("id");
+        var popup = confirm("Are you sure you want to remove this configuration?!");
+        if (popup == true) {
+            $.post("/website/delete/" + id).done(location.replace("/website"))
+        }
+        else {
+            $.post("/website/details/" + id)
+        }
+    });
+
 });

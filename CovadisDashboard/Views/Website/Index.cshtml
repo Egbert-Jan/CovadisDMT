@@ -1,4 +1,4 @@
-﻿@model List<WebsiteModel>;
+﻿@model List<WebsiteModel>
 @{
     ViewData["Title"] = "Add new check";
 }
@@ -11,37 +11,30 @@
 
         <table class="table-striped">
             <tr>
-                <th class="col-sm-6">Url</th>
+                <th class="col-sm-5">Url</th>
                 <th class="col-sm-6">Elementen</th>
+                <th class="col-sm-1">Details</th>
             </tr>
             @foreach (var row in Model)
             {
                 <tr>
-                    <td>@row.url <br /></td>
+                    <td>@row.Url <br /></td>
                     <td>
                         @{
-                            foreach (var element in row.elementen)
+                            foreach (var element in row.Elements)
                             {
 
-                                @element.elementName <span>-</span>
-                                @element.elementStatus<span> || </span>
+                                @element.Name <span>-</span>
+                                @element.Status<span> || </span>
 
                             }
                         }
                     </td>
-
+                    <td>
+                        @Html.ActionLink("Details", "Details", "Website", new { @row.Id }, new { @class = "btn btn-primary" })
+                    </td>
                 </tr>
             }
         </table>
-
-        <p>
-            @{
-                if (ViewData["id"] != null)
-                {
-                    @ViewData["id"]
-                }
-            }
-        </p>
-
     </div>
 </div>

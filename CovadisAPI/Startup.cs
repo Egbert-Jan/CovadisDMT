@@ -91,8 +91,17 @@ namespace CovadisAPI
 
         private void beginDataVoorDatabase()
         {
+
             using (var context = new ApplicationDbContext())
             {
+                context.GlobalConfiguration.Add(new ConfigurationModel()
+                {
+                    ConfigName = "CheckTime",
+                    Value = "15"
+                });
+
+
+
                 ElementModel element1 = new ElementModel { Name = "Hello" };
 
                 ElementModel element2 = new ElementModel { Name = "Hallo" };

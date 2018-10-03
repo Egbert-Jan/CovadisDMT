@@ -21,7 +21,6 @@ namespace CovadisAPI.Checks
             using (var context = new ApplicationDbContext())
             {
                 elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
-                //elements = context.Elements.Where(w => w.Website.WebsiteID == website.WebsiteID).ToList();
             }
 
             // haalt de site op die werd mee gegeven in de website parameter

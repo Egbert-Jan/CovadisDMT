@@ -12,6 +12,8 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Url { get; set; }
 
+        public bool LastDataCorrect { get; set; }
+
         public IList<ElementModel> Elements { get; set; }
     }
 

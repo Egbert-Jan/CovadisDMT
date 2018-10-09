@@ -14,6 +14,8 @@ namespace CovadisAPI.Data
 
         public bool LastDataCorrect { get; set; }
 
+        public int TimesWrongData { get; set; }
+
         public IList<ElementModel> Elements { get; set; }
     }
 

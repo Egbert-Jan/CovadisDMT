@@ -94,33 +94,31 @@ namespace CovadisAPI
 
             using (var context = new ApplicationDbContext())
             {
+                //Configurations
                 context.GlobalConfiguration.Add(new ConfigurationModel()
                 {
                     ConfigName = "CheckTime",
                     Value = "15"
                 });
-
-
+                context.GlobalConfiguration.Add(new ConfigurationModel()
+                {
+                    ConfigName = "MessageAfterTrials",
+                    Value = "2"
+                });
+                
 
                 ElementModel element1 = new ElementModel { Name = "Hello" };
-
                 ElementModel element2 = new ElementModel { Name = "Hallo" };
-
                 ElementModel element3 = new ElementModel { Name = "Bonjour" };
-
                 context.Websites.Add(new WebsiteModel()
                 {
                     Url = "https://gms.azurewebsites.net/",
                     Elements = new List<ElementModel> { element1, element2, element3 }
                 });
 
-
                 ElementModel element11 = new ElementModel { Name = "Hello" };
-
                 ElementModel element22 = new ElementModel { Name = "Halo" };
-
                 ElementModel element33 = new ElementModel { Name = "Bonjour" };
-
                 context.Websites.Add(new WebsiteModel()
                 {
                     Url = "https://gms.azurewebsites.net/",

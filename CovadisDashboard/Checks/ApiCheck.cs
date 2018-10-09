@@ -2,17 +2,17 @@
 
 namespace CovadisDashboard.Checks
 {
-    public class WebsiteCheck
+    public class ApiCheck
     {
-        public WebsiteModel RequestWebsite(string url)
+        public ApiModel RequestApi(string url)
         {
             GetJson GetJson = new GetJson();
             string apiUrl = "http://localhost:51226/api";
             string requestUrl = apiUrl + url;
 
-            var Website = GetJson._download_serialized_json_data<WebsiteModel>(requestUrl);
+            var Api = GetJson._download_serialized_json_data<ApiModel>(requestUrl);
 
-            return Website;
+            return Api;
         }
     }
 }

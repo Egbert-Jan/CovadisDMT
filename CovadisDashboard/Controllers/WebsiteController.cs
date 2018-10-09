@@ -31,14 +31,14 @@ namespace CovadisDashboard.Controllers
             ViewData["id"] = id;
 
             Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
+            WebsiteModel Model = check.RequestWebsite("/websites/" + id);
 
             return View(Model);
         }
 
         // GET: /website/add
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Create()
         {
             ViewData["Message"] = "Here you can add a websites configuration.";
 
@@ -48,14 +48,14 @@ namespace CovadisDashboard.Controllers
         // GET: /website/update/{id}
         [HttpGet]
         [Route("/website/update/{id:int}")]
-        public IActionResult Update(int id)
+        public IActionResult Edit(int id)
         {
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
             Checks.WebsiteCheck check = new Checks.WebsiteCheck();
 
-            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
+            WebsiteModel Model = check.RequestWebsite("/websites/" + id);
             
             return View(Model);
         }
@@ -65,7 +65,7 @@ namespace CovadisDashboard.Controllers
 
         // POST: /website/add
         [HttpPost]
-        public async Task<IActionResult> Add(int elements)
+        public async Task<IActionResult> Create(int elements)
         {
             List<ElementModel> Elements = new List<ElementModel>();
             WebsiteModel Model = new WebsiteModel();
@@ -104,7 +104,7 @@ namespace CovadisDashboard.Controllers
         // PUTS //
         // PUT: /website/update/{id}
         [HttpPost("/website/update/{id:int}")]
-        public async Task<IActionResult> Update(WebsiteModel Model, int elements, int id)
+        public async Task<IActionResult> Edit(WebsiteModel Model, int elements, int id)
         {
             List<ElementModel> Elements = new List<ElementModel>();
             

@@ -1,0 +1,39 @@
+﻿@model List<ApiModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    if (Model == null)
+    {
+        <h1>There are no API's to be checked. Please start by adding some first!</h1>
+        @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-sm-offset-1 col-sm-11">
+
+                <h2>@ViewData["Title"]</h2>
+                <h3>@ViewData["Message"]</h3>
+
+                <table class="table-striped">
+                    <tr>
+                        <th class="col-sm-5">Name</th>
+                        <th class="col-sm-6">Url</th>
+                    </tr>
+                    @foreach (var row in Model)
+                    {
+                        <tr>
+                            <td>@row.Name <br /></td>
+                            <td>@row.Url</td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", "Api", new { @row.Id }, new { @class = "btn btn-primary" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+}

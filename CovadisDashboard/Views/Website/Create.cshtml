@@ -13,13 +13,13 @@
 
         <div class="row">
             <div class="col-sm-8">
-                <form asp-action="Add" asp-controller="Website">
+                <form asp-action="Create" asp-controller="Website">
                     <div id="items">
-                        @*<div class="form-group">
+                        <div class="form-group">
                             <label for="Name"></label>
                             <input name="Name" placeholder="Your name goes here..."
                                    class="form-control" required />
-                        </div>*@
+                        </div>
                         <div class="form-group">
                             <label for="Url"></label>
                             <input name="Url" placeholder="Your url goes here..."
@@ -39,4 +39,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

@@ -33,6 +33,12 @@ namespace CovadisDashboard.Controllers
             Checks.WebsiteCheck check = new Checks.WebsiteCheck();
             WebsiteModel Model = check.RequestWebsite("/websites/" + id);
 
+            if (Model.Url == null)
+            {
+                Response.StatusCode = 404;
+                return View("../shared/page404");
+            }
+
             return View(Model);
         }
 
@@ -45,9 +51,9 @@ namespace CovadisDashboard.Controllers
             return View();
         }
 
-        // GET: /website/update/{id}
+        // GET: /website/edit/{id}
         [HttpGet]
-        [Route("/website/update/{id:int}")]
+        [Route("/website/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
             ViewData["Message"] = "Here you can update an existing websites configuration.";
@@ -56,7 +62,13 @@ namespace CovadisDashboard.Controllers
             Checks.WebsiteCheck check = new Checks.WebsiteCheck();
 
             WebsiteModel Model = check.RequestWebsite("/websites/" + id);
-            
+
+            if (Model.Url == null)
+            {
+                Response.StatusCode = 404;
+                return View("../shared/page404");
+            }
+
             return View(Model);
         }
         
@@ -102,8 +114,8 @@ namespace CovadisDashboard.Controllers
 
 
         // PUTS //
-        // PUT: /website/update/{id}
-        [HttpPost("/website/update/{id:int}")]
+        // PUT: /website/edit/{id}
+        [HttpPost("/website/edit/{id:int}")]
         public async Task<IActionResult> Edit(WebsiteModel Model, int elements, int id)
         {
             List<ElementModel> Elements = new List<ElementModel>();
@@ -137,7 +149,7 @@ namespace CovadisDashboard.Controllers
 
             }
             
-            return Content($"{responseString}");
+            return Redirect("/website");
         }
 
 
@@ -153,7 +165,7 @@ namespace CovadisDashboard.Controllers
                 var response = await Startup.client.DeleteAsync("http://localhost:51226/api/websites/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    responseMessage = (response.Content.ReadAsAsync<string>().Result);
+                    responseMessage = (response.RequestMessage.ToString());
                 }
                 else
                 {

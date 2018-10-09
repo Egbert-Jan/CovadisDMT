@@ -1,48 +1,67 @@
 ﻿@model List<WebsiteModel>
 @{
-    ViewData["Title"] = "Add new check";
-}
+    ViewData["Title"] = "Index";
 
-@{
-    if (Model == null)
+    if (Model.Count == 0)
     {
-        <h1>There are no websites to be checked. Please start by adding some first!</h1>
+        <h2>There are no websites to be checked.<br /> Please start by adding one with the button below!</h2>
         @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
     }
     else
     {
         <div class="row">
             <div class="col-sm-offset-1 col-sm-11">
-
                 <h3>@ViewData["Message"]</h3>
+                <hr />
 
-                <table class="table-striped">
-                    <tr>
-                        <th class="col-sm-5">Url</th>
-                        <th class="col-sm-6">Elementen</th>
-                        <th class="col-sm-1">Details</th>
-                    </tr>
+                <dl class="dl-horizontal">
+
                     @foreach (var row in Model)
                     {
-                        <tr>
-                            <td>@row.Url <br /></td>
-                            <td>
-                                @{
-                                    foreach (var element in row.Elements)
-                                    {
-
-                                        @element.Name <span>-</span>
-                                        @element.Status<span> || </span>
-
-                                    }
+                        if (row.Url != null && row.Id != 0)
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => row.Name)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => row.Url)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Url)
+                            </dd>
+                            {
+                                foreach (var element in row.Elements)
+                                {
+                                    <dt>
+                                        @Html.DisplayNameFor(model => element.Name)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => element.Name)
+                                    </dd>
+                                    <dt>
+                                        @Html.DisplayNameFor(model => element.Status)
+                                    </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => element.Status)
+                                    </dd>
                                 }
-                            </td>
-                            <td>
-                                @Html.ActionLink("Details", "Details", "Website", new { @row.Id }, new { @class = "btn btn-primary" })
-                            </td>
-                        </tr>
+                            }
+                            <dt>
+                                Details:
+                            </dt>
+                            <dd>
+                                @Html.ActionLink("Details", "Details", new{ @row.Id })
+                            </dd>
+                            <hr />
+                        }
                     }
-                </table>
+                </dl>
+                <div>
+                    @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
+                </div>
             </div>
         </div>
     }

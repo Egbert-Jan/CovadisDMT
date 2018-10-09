@@ -20,7 +20,7 @@ namespace CovadisDashboard.Controllers
             Checks.ApiChecks check = new Checks.ApiChecks();
             List<ApiModel> Apis = check.RequestApis("/apis");
 
-            return View();
+            return View(Apis);
         }
 
         // GET: /api/details/{id}
@@ -30,6 +30,18 @@ namespace CovadisDashboard.Controllers
 
             Checks.ApiCheck check = new Checks.ApiCheck();
             ApiModel Model = check.RequestApi("/api/" + id);
+
+            //ApiModel Model = new ApiModel();
+            //Model.Url = "https://www.nu.nl";
+            //Model.Name = "Test";
+            //Model.Id = 1;
+
+
+            if (Model.Url == null)
+            {
+                Response.StatusCode = 404;
+                return View("../shared/page404");
+            }
 
             return View(Model);
         }
@@ -44,15 +56,21 @@ namespace CovadisDashboard.Controllers
 
         // GET: /website/update/{id}
         [HttpGet]
-        [Route("/website/update/{id:int}")]
+        [Route("/api/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
-            ViewData["Message"] = "Here you can update an existing websites configuration.";
+            ViewData["Message"] = "Here you can edit an existing websites configuration.";
             ViewData["id"] = id;
 
             Checks.ApiCheck check = new Checks.ApiCheck();
 
             ApiModel Model = check.RequestApi("/api/" + id);
+
+            if (Model.Url == null)
+            {
+                Response.StatusCode = 404;
+                return View("../Home/Index");
+            }
 
             return View(Model);
         }
@@ -113,7 +131,7 @@ namespace CovadisDashboard.Controllers
 
         // DELETES //
         // DELETE: /website/delete/{id}
-        [HttpPost("/website/delete/{id:int}")]
+        [HttpPost("/api/delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             string responseMessage = null;

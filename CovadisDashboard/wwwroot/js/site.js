@@ -27,16 +27,20 @@ $(document).ready(function () {
         e.preventDefault(); $(this).parent('div').remove(); x--;
         $("#Elements").val(x);
     });
-    
+
+
+    //Popupmessage before deleting a config
+    //Then redirect back to the overview
     $(".deleteButton").click(function (e) {
         e.preventDefault();
         var id = $(this).attr("id");
+        var controller = $(this).attr("name");
         var popup = confirm("Are you sure you want to remove this configuration?!");
         if (popup == true) {
-            $.post("/website/delete/" + id).done(location.replace("/website"))
+            $.post("/" + controller + "/delete/" + id).done(location.replace("/" + controller))
         }
         else {
-            $.post("/website/details/" + id)
+            $.post("/" + controller + "/details/" + id)
         }
     });
 

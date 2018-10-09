@@ -4,6 +4,7 @@ namespace CovadisDashboard.Models
 {
     public class ApiModel
     {
+        [DisplayName("Id: ")]
         public int Id { get; set; }
 
         [DisplayName("Name: ")]

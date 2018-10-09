@@ -26,11 +26,17 @@
                             <input asp-for="Url" class="form-control" />
                             <span asp-validation-for="Url" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label>Elements:</label>
+                        </div>
                         <div class="hidden">
                             <input id="Elements" name="Elements" />
                         </div>
                         <div class="form-group">
-                            <label>Elements:</label>
+                            <div class="form-group">
+                            <label for="Element1">Element1</label>
+                            <input type="text" class="form-control" name="Element1" required />
+                        </div>
                         </div>
                     </div>
                     <input type="submit" />

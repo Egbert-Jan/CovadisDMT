@@ -4,11 +4,11 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
-    var max_fields = 10 //maximum input boxes allowed
+    var max_fields = 9 //maximum input boxes allowed
     var wrapper = $("#items"); //Fields wrapper
     var add_button = $("#addElement"); //Add button ID
 
-    var x = 0; //initlal text box count
+    var x = 1; //initlal text box count
     $(add_button).click(function (e) { //on add input button click
         e.preventDefault();
         if (x < max_fields) { //max input box allowed

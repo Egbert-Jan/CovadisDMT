@@ -103,8 +103,15 @@ namespace CovadisDashboard.Controllers
                     ElementModel elementModel = new ElementModel();
                     string counter = i.ToString();
                     string name = "Element" + i;
-                    elementModel.Name = Request.Form[name];
-                    Elements.Add(elementModel);
+                    if(!String.IsNullOrEmpty(Request.Form[name]))
+                    {
+                        elementModel.Name = Request.Form[name];
+                        Elements.Add(elementModel);
+                    }
+                    else
+                    {
+                        elements++;
+                    }
                 }
 
                 Model.Elements = Elements;
@@ -122,7 +129,7 @@ namespace CovadisDashboard.Controllers
                 }
 
                 //return Content($"{responseString}");
-                return Redirect("/website");
+                return RedirectToAction("/index");
             }
             else
             {

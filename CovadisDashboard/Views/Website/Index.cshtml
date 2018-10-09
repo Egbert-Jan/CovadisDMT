@@ -53,7 +53,19 @@
                                 Details:
                             </dt>
                             <dd>
-                                @Html.ActionLink("Details", "Details", new{ @row.Id })
+                                @Html.ActionLink("Details", "Details", new { @row.Id })
+                            </dd>
+                            <hr />
+                        }
+                        else
+                        {
+                            <dt>Error:</dt>
+                            <dd>Unable te retreive data for this configuration!</dd>
+                            <dt>
+                                Message
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Message)
                             </dd>
                             <hr />
                         }

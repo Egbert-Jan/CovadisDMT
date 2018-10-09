@@ -23,11 +23,16 @@ namespace CovadisDashboard.Controllers
 
             return View(Websites);
         }
-        
+
         // GET: /website/details/{id}
         [HttpGet("/website/details/{id:int}")]
         public IActionResult Details(int id)
         {
+            if(id == 0)
+            {
+                return CustomNotFound();
+            }
+
             ViewData["id"] = id;
 
             Checks.WebsiteCheck check = new Checks.WebsiteCheck();
@@ -35,8 +40,7 @@ namespace CovadisDashboard.Controllers
 
             if (Model.Url == null)
             {
-                Response.StatusCode = 404;
-                return View("../shared/page404");
+                return CustomNotFound();
             }
 
             return View(Model);
@@ -56,6 +60,11 @@ namespace CovadisDashboard.Controllers
         [Route("/website/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
+            if (id == 0)
+            {
+                return CustomNotFound();
+            }
+
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
@@ -65,51 +74,63 @@ namespace CovadisDashboard.Controllers
 
             if (Model.Url == null)
             {
-                Response.StatusCode = 404;
-                return View("../shared/page404");
+                return CustomNotFound();
             }
 
             return View(Model);
         }
-        
+
 
         // POSTS //
 
         // POST: /website/add
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int elements)
         {
-            List<ElementModel> Elements = new List<ElementModel>();
-            WebsiteModel Model = new WebsiteModel();
-
-            Model.Name = Request.Form["Name"];
-            Model.Url = Request.Form["Url"];
-            
-            for(int i = 1; i <= elements; i++)
+            if (ModelState.IsValid)
             {
-                ElementModel elementModel = new ElementModel();
-                string counter = i.ToString();
-                string name = "Element" + i;
-                elementModel.Name = Request.Form[name];
-                Elements.Add(elementModel);
+                List<ElementModel> Elements = new List<ElementModel>();
+                WebsiteModel Model = new WebsiteModel();
+
+                Helpers.HelperClass helper = new Helpers.HelperClass();
+                
+                Model.Name = Request.Form["Name"];
+                Model.Url = helper.UrlHttps(Request.Form["Url"]);
+
+                for (int i = 1; i <= elements; i++)
+                {
+                    ElementModel elementModel = new ElementModel();
+                    string counter = i.ToString();
+                    string name = "Element" + i;
+                    elementModel.Name = Request.Form[name];
+                    Elements.Add(elementModel);
+                }
+
+                Model.Elements = Elements;
+
+                var responseString = (String)null;
+
+                try
+                {
+                    var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", Model);
+                    responseString = await response.Content.ReadAsStringAsync();
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                //return Content($"{responseString}");
+                return Redirect("/website");
             }
-
-            Model.Elements = Elements;
-
-            var responseString = (String)null;
-
-            try
+            else
             {
-                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", Model);
-                responseString = await response.Content.ReadAsStringAsync();
+                WebsiteModel Model = new WebsiteModel();
+                Model.Url = Request.Form["Url"];
+                Model.Name = Request.Form["Name"];
+                return View(Model);
             }
-            catch(Exception e)
-            {
-
-            }
-
-            //return Content($"{responseString}");
-            return Redirect("/website");
         }
 
 
@@ -118,8 +139,13 @@ namespace CovadisDashboard.Controllers
         [HttpPost("/website/edit/{id:int}")]
         public async Task<IActionResult> Edit(WebsiteModel Model, int elements, int id)
         {
+            if(id != Model.Id)
+            {
+                return CustomNotFound();
+            }
+
             List<ElementModel> Elements = new List<ElementModel>();
-            
+
             Model.Name = Request.Form["Name"];
             Model.Url = Request.Form["Url"];
 
@@ -136,7 +162,7 @@ namespace CovadisDashboard.Controllers
             }
 
             Model.Elements = Elements;
-            
+
             var responseString = (String)null;
 
             try
@@ -148,7 +174,8 @@ namespace CovadisDashboard.Controllers
             {
 
             }
-            
+
+            //return Content($"{responseString}");
             return Redirect("/website");
         }
 
@@ -177,8 +204,14 @@ namespace CovadisDashboard.Controllers
 
             }
 
-            return Redirect("/website");
+            //return Content($"{responseString}");
+            return RedirectToAction("/index");
         }
 
+        // When page is not found, return page404 not found
+        public IActionResult CustomNotFound()
+        {
+            return View("../shared/page404");
+        }
     }
 }

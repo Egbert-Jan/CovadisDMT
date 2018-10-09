@@ -24,8 +24,13 @@ namespace CovadisDashboard.Controllers
         }
 
         // GET: /api/details/{id}
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
+            if (id == 0)
+            {
+                return CustomNotFound();
+            }
+
             ViewData["id"] = id;
 
             Checks.ApiCheck check = new Checks.ApiCheck();
@@ -39,8 +44,7 @@ namespace CovadisDashboard.Controllers
 
             if (Model.Url == null)
             {
-                Response.StatusCode = 404;
-                return View("../shared/page404");
+                return CustomNotFound();
             }
 
             return View(Model);
@@ -59,6 +63,11 @@ namespace CovadisDashboard.Controllers
         [Route("/api/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
+            if (id == 0)
+            {
+                return CustomNotFound();
+            }
+
             ViewData["Message"] = "Here you can edit an existing websites configuration.";
             ViewData["id"] = id;
 
@@ -68,8 +77,7 @@ namespace CovadisDashboard.Controllers
 
             if (Model.Url == null)
             {
-                Response.StatusCode = 404;
-                return View("../Home/Index");
+                return CustomNotFound();
             }
 
             return View(Model);
@@ -80,27 +88,35 @@ namespace CovadisDashboard.Controllers
 
         // POST: /api/create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int i)
         {
-            ApiModel Model = new ApiModel();
+            if (ModelState.IsValid)
+            {
+                ApiModel Model = new ApiModel();
 
-            Model.Name = Request.Form["Name"];
-            Model.Url = Request.Form["Url"];
+                Model.Name = Request.Form["Name"];
+                Model.Url = Request.Form["Url"];
             
-            var responseString = (String)null;
+                var responseString = (String)null;
 
-            try
-            {
-                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/api", Model);
-                responseString = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/api", Model);
+                    responseString = await response.Content.ReadAsStringAsync();
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                //return Content($"{responseString}");
+                return Redirect("/api");
             }
-            catch (Exception e)
+            else
             {
-
+                return View();
             }
-
-            //return Content($"{responseString}");
-            return Redirect("/api");
         }
 
 
@@ -125,7 +141,8 @@ namespace CovadisDashboard.Controllers
 
             }
 
-            return Content($"{responseString}");
+            //return Content($"{responseString}");
+            return Redirect("/api");
         }
 
 
@@ -134,18 +151,18 @@ namespace CovadisDashboard.Controllers
         [HttpPost("/api/delete/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            string responseMessage = null;
+            string responseString = null;
 
             try
             {
                 var response = await Startup.client.DeleteAsync("http://localhost:51226/api/websites/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    responseMessage = (response.Content.ReadAsAsync<string>().Result);
+                    responseString = (response.Content.ReadAsAsync<string>().Result);
                 }
                 else
                 {
-                    responseMessage = (response.StatusCode.ToString());
+                    responseString = (response.StatusCode.ToString());
                 }
             }
             catch (Exception e)
@@ -153,7 +170,14 @@ namespace CovadisDashboard.Controllers
 
             }
 
-            return Redirect("/api");
+            //return Content($"{responseString}");
+            return RedirectToAction("/index");
+        }
+
+        // When page is not found, return page404 not found
+        public IActionResult CustomNotFound()
+        {
+            return View("../shared/page404");
         }
     }
 }

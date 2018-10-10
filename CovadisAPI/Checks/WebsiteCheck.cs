@@ -82,8 +82,27 @@ namespace CovadisAPI.Checks
             }
             catch
             {
-                error.Message = "Error met ophalen van url. Dit kan zijn dat er geen https voor staat";
-                return error;
+                var faultyWebsite = new FaultyWebsiteModel
+                {
+                    Id = website.Id,
+                    Url = website.Url,
+                    Error = "URL Error",
+                    Elements = new List<ElementModel> { }
+                };
+
+                foreach (var element in elements)
+                {
+                    var elem = new ElementModel
+                    {
+                        Id = element.Id,
+                        Name = element.Name,
+                        Status = "Error: Could not check element"
+                    };
+
+                    faultyWebsite.Elements.Add(elem);
+                }
+
+                return faultyWebsite;
             }
         }
     }

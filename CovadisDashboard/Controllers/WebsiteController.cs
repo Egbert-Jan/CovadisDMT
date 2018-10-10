@@ -28,21 +28,16 @@ namespace CovadisDashboard.Controllers
         [HttpGet("/website/details/{id:int}")]
         public IActionResult Details(int id)
         {
-            if(id == 0)
-            {
-                return CustomNotFound();
-            }
-
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
             WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
 
-            if (Model.Url == null)
+            if(Model.Url == null)
             {
-                return CustomNotFound();
+                return View("../shared/page404");
             }
-
+            
             return View(Model);
         }
 
@@ -60,22 +55,12 @@ namespace CovadisDashboard.Controllers
         [Route("/website/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
-            if (id == 0)
-            {
-                return CustomNotFound();
-            }
-
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
             WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
-
-            if (Model.Url == null)
-            {
-                return CustomNotFound();
-            }
-
+            
             return View(Model);
         }
 
@@ -143,9 +128,9 @@ namespace CovadisDashboard.Controllers
         [HttpPost("/website/edit/{id:int}")]
         public async Task<IActionResult> Edit(WebsiteModel Model, int elements, int id)
         {
-            if(id != Model.Id)
+            if (id != Model.Id)
             {
-                return CustomNotFound();
+                return View("../shared/page404");
             }
 
             List<ElementModel> Elements = new List<ElementModel>();
@@ -212,8 +197,8 @@ namespace CovadisDashboard.Controllers
             return RedirectToAction("/index");
         }
 
-        // When page is not found, return page404 not found
-        public IActionResult CustomNotFound()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
             return View("../shared/page404");
         }

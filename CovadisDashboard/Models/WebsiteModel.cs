@@ -23,9 +23,8 @@ namespace CovadisDashboard.Models
 
         [DisplayName("Elements: ")]
         public List<ElementModel> Elements { get; set; }
-
-        //For when the API fails
-        public string Message { get; set; }
+        
+        public string Error { get; set; }
 
         public override string ToString()
         {

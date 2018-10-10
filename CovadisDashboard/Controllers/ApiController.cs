@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
+using System.Diagnostics;
 
 namespace CovadisDashboard.Controllers
 {
@@ -26,11 +27,6 @@ namespace CovadisDashboard.Controllers
         // GET: /api/details/{id}
         public IActionResult Details(int id)
         {
-            if (id == 0)
-            {
-                return CustomNotFound();
-            }
-
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
@@ -40,13 +36,7 @@ namespace CovadisDashboard.Controllers
             //Model.Url = "https://www.nu.nl";
             //Model.Name = "Test";
             //Model.Id = 1;
-
-
-            if (Model.Url == null)
-            {
-                return CustomNotFound();
-            }
-
+            
             return View(Model);
         }
 
@@ -63,22 +53,12 @@ namespace CovadisDashboard.Controllers
         [Route("/api/edit/{id:int}")]
         public IActionResult Edit(int id)
         {
-            if (id == 0)
-            {
-                return CustomNotFound();
-            }
-
             ViewData["Message"] = "Here you can edit an existing websites configuration.";
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
             ApiModel Model = check.GetObject<ApiModel>("/apis/" + id);
-
-            if (Model.Url == null)
-            {
-                return CustomNotFound();
-            }
-
+            
             return View(Model);
         }
 
@@ -173,8 +153,8 @@ namespace CovadisDashboard.Controllers
             return RedirectToAction("/index");
         }
 
-        // When page is not found, return page404 not found
-        public IActionResult CustomNotFound()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
             return View("../shared/page404");
         }

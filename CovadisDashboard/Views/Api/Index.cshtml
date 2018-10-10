@@ -1,50 +1,53 @@
 ﻿@model List<ApiModel>
 @{
     ViewData["Title"] = "Index";
+}
 
-    if (Model.Count() == 0)
-    {
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-11">
+
+        @if (Model.Count() == 0)
+        {
         <h1>There are no API's to be checked.<br /> Please start by adding one first!</h1>
         @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
-    }
-    else
-    {
-        <div class="row">
-            <div class="col-sm-offset-1 col-sm-11">
+        }
+        else
+        {
 
-                <h3>@ViewData["Message"]</h3>
 
-                <dl class="dl-horizontal">
+        <h3>@ViewData["Message"]</h3>
 
-                    @foreach (var row in Model)
-                    {
-                        if (row.Url != null && row.Id != 0)
-                        {
-                            <dt>
-                                @Html.DisplayNameFor(model => row.Name)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => row.Name)
-                            </dd>
-                            <dt>
-                                @Html.DisplayNameFor(model => row.Url)
-                            </dt>
-                            <dd>
-                                @Html.DisplayFor(model => row.Url)
-                            </dd>
-                            <dt>
-                                Details:
-                            </dt>
-                            <dd>
-                                @Html.ActionLink("Details", "Details", new { @row.Id })
-                            </dd>
-                        }
-                    }
-                </dl>
-                <div>
-                    @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
-                </div>
-            </div>
+        <dl class="dl-horizontal">
+
+            @foreach (var row in Model)
+            {
+                if (row.Url != null && row.Id != 0)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => row.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => row.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => row.Url)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => row.Url)
+                    </dd>
+                    <dt>
+                        Details:
+                    </dt>
+                    <dd>
+                        @Html.ActionLink("Details", "Details", new { @row.Id })
+                    </dd>
+                }
+            }
+        </dl>
+        <div>
+            @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
         </div>
-    }
-}
+        }
+
+    </div>
+</div>

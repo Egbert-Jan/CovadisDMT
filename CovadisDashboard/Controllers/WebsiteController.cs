@@ -18,8 +18,8 @@ namespace CovadisDashboard.Controllers
         {
             ViewData["Message"] = "This is an overview of all the websites that are getting checked.";
 
-            Checks.WebsitesCheck check = new Checks.WebsitesCheck();
-            List<WebsiteModel> Websites = check.RequestWebsites("/websites");
+            Checks.getDB check = new Checks.getDB();
+            List<WebsiteModel> Websites = check.GetObjects<List<WebsiteModel>>("/websites");
 
             return View(Websites);
         }
@@ -35,8 +35,8 @@ namespace CovadisDashboard.Controllers
 
             ViewData["id"] = id;
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            WebsiteModel Model = check.RequestWebsite("/websites/" + id);
+            Checks.getDB check = new Checks.getDB();
+            WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
 
             if (Model.Url == null)
             {
@@ -68,9 +68,8 @@ namespace CovadisDashboard.Controllers
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-
-            WebsiteModel Model = check.RequestWebsite("/websites/" + id);
+            Checks.getDB check = new Checks.getDB();
+            WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
 
             if (Model.Url == null)
             {
@@ -92,11 +91,9 @@ namespace CovadisDashboard.Controllers
             {
                 List<ElementModel> Elements = new List<ElementModel>();
                 WebsiteModel Model = new WebsiteModel();
-
-                Helpers.HelperClass helper = new Helpers.HelperClass();
-                
+                                
                 Model.Name = Request.Form["Name"];
-                Model.Url = helper.UrlHttps(Request.Form["Url"]);
+                Model.Url = Request.Form["Url"];
 
                 for (int i = 1; i <= elements; i++)
                 {

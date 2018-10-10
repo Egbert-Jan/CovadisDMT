@@ -17,8 +17,8 @@ namespace CovadisDashboard.Controllers
         {
             ViewData["Message"] = "This is an overview of all the API's that are getting checked.";
 
-            Checks.ApiChecks check = new Checks.ApiChecks();
-            List<ApiModel> Apis = check.RequestApis("/apis");
+            Checks.getDB check = new Checks.getDB();
+            List<ApiModel> Apis = check.GetObjects<List<ApiModel>>("/apis");
 
             return View(Apis);
         }
@@ -33,8 +33,8 @@ namespace CovadisDashboard.Controllers
 
             ViewData["id"] = id;
 
-            Checks.ApiCheck check = new Checks.ApiCheck();
-            ApiModel Model = check.RequestApi("/api/" + id);
+            Checks.getDB check = new Checks.getDB();
+            ApiModel Model = check.GetObject<ApiModel>("/apis/" + id);
 
             //ApiModel Model = new ApiModel();
             //Model.Url = "https://www.nu.nl";
@@ -71,9 +71,8 @@ namespace CovadisDashboard.Controllers
             ViewData["Message"] = "Here you can edit an existing websites configuration.";
             ViewData["id"] = id;
 
-            Checks.ApiCheck check = new Checks.ApiCheck();
-
-            ApiModel Model = check.RequestApi("/api/" + id);
+            Checks.getDB check = new Checks.getDB();
+            ApiModel Model = check.GetObject<ApiModel>("/apis/" + id);
 
             if (Model.Url == null)
             {

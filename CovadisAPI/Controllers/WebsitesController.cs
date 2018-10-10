@@ -136,22 +136,8 @@ namespace CovadisAPI.Controllers
         {
             using (var context = new ApplicationDbContext())
             {
-                var oldConfig = context.Websites.Find(website.Id);
-                List<ElementModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
-
-                if(oldConfig != null)
-                {
-                    oldConfig.Url = website.Url;
-
-                    foreach (var element in elements)
-                    {
-                        context.Elements.Remove(element);
-                    }
-
-                    oldConfig.Elements = website.Elements;
-
-                    context.SaveChanges();
-                }
+                context.Websites.Update(website);
+                context.SaveChanges();
             }
         }
 

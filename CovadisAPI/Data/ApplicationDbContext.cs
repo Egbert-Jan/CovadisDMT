@@ -11,6 +11,9 @@ namespace CovadisAPI.Data
         public DbSet<ElementModel> Elements { get; set; }
         public DbSet<ConfigurationModel> GlobalConfiguration { get; set; }
 
+        //public DbSet<WebsiteLog> WebsiteLog { get; set; }
+        //public DbSet<ElementLog> ElementLog { get; set; }
+
         public ApplicationDbContext()
         {
             

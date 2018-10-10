@@ -12,6 +12,17 @@ namespace CovadisAPI.Checks
     public class WebsiteCheck
     {
         ErrorModel error = new ErrorModel();
+        string Token;
+
+        public WebsiteCheck()
+        {
+
+        }
+
+        public WebsiteCheck(string token)
+        { 
+           this.Token = token;
+        }
 
         public async Task<object> CheckWebsite(WebsiteModel website)
         {
@@ -113,37 +124,41 @@ namespace CovadisAPI.Checks
         }
 
 
-        public void AddToLog(WebsiteModel website)
+        private void AddToLog(WebsiteModel website)
         {
-            DateTime dateTime = DateTime.UtcNow;
-
-            Debug.WriteLine(dateTime);
-
-            using (var context = new ApplicationDbContext())
+            if(Token != null && Token == "lolxddezeapptokenislit12345")
             {
-                var web = new WebsiteLog()
-                {
-                    WebsiteID = website.Id,
-                    Url = website.Url,
-                    Error = website.Error,
-                    TimeStamp = dateTime.ToString()
-                };
-                context.WebsiteLog.Add(web);
+                DateTime dateTime = DateTime.UtcNow;
 
-                foreach (var element in website.Elements)
+                Debug.WriteLine(dateTime);
+
+                using (var context = new ApplicationDbContext())
                 {
-                    context.ElementLog.Add(new ElementLog()
+                    var web = new WebsiteLog()
                     {
-                        Name = element.Name,
-                        Status = element.Status,
-                        WebsiteID = web.WebsiteID,
+                        WebsiteID = website.Id,
+                        Url = website.Url,
+                        Error = website.Error,
                         TimeStamp = dateTime.ToString()
-                    });
+                    };
+                    context.WebsiteLog.Add(web);
+
+                    foreach (var element in website.Elements)
+                    {
+                        context.ElementLog.Add(new ElementLog()
+                        {
+                            Name = element.Name,
+                            Status = element.Status,
+                            WebsiteID = web.WebsiteID,
+                            TimeStamp = dateTime.ToString()
+                        });
+                    }
+
+                    context.SaveChanges();
                 }
 
-                context.SaveChanges();
+            //Eind if
             }
-
         }
     }
 }

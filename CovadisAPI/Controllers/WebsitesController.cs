@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,9 +21,13 @@ namespace CovadisAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync()
         {
+            //Debug.WriteLine("hier:");
+            //Debug.WriteLine(Request.Headers);
+            //Debug.WriteLine(Request.Headers["app-token"].ToString());
+
             List<object> checkedWebsites = new List<object> { };
 
-            WebsiteCheck check = new WebsiteCheck();
+            WebsiteCheck check = new WebsiteCheck(Request.Headers["app-token"].ToString());
             using (var context = new ApplicationDbContext())
             {
                 foreach (var website in context.Websites)

@@ -82,7 +82,7 @@ namespace CovadisAPI.Checks
             }
             catch
             {
-                var faultyWebsite = new FaultyWebsiteModel
+                var faultyWebsite = new WebsiteModel
                 {
                     Id = website.Id,
                     Url = website.Url,

@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CovadisDashboard</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/js/site.js")"></script>
-    @RenderSection("JavaScript", required: false)
+    <script type="text/javascript" src="@Url.Content("/js/site.js")"></script>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -85,12 +84,8 @@
     </environment>
     <div id="piechart"></div>
     <script>
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
+
     </script>
-    @RenderSection("Scripts", required: false)
 
 </body>
 </html>

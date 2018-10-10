@@ -43,5 +43,5 @@ $(document).ready(function () {
             $.post("/" + controller + "/details/" + id)
         }
     });
-
+    
 });

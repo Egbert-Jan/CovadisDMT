@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CovadisDashboard.Models.MultipleModel;
+@{
     ViewData["Title"] = "Homepage";
 }
 
@@ -7,40 +8,52 @@
 </div>
 
 <div class="row">
-        
+
     <div class="col-sm-2 rightBorder">
         <h2>Add new check</h2>
-        @Html.ActionLink("Add Website","Create","Website", new { }, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Add Api","Create","Api", new { }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
     </div>
 
     <div class="col-sm-5 rightBorder">
         <h1>API's to check</h1>
         <table class="table-striped">
             <tr>
-                <th class="col-md-3">Name:</th>
-                <th class="col-md-2">Status:</th>
+                <th class="col-md-2">Name:</th>
                 <th class="col-md-6">URL:</th>
-                <th class="col-md-1">Edit:</th>
+                <th class="col-md-2">Status:</th>
+                <th class="col-md-1">View:</th>
             </tr>
-            <tr>
-                <td>Test1</td>
-                <td>Good</td>
-                <td>www.google.com</td>
-                <td>x</td>
-            </tr>
-            <tr>
-                <td>Test2</td>
-                <td>Poor</td>
-                <td>www.facebook.com</td>
-                <td>x</td>
-            </tr>
-            <tr>
-                <td>Test</td>
-                <td>Bad</td>
-                <td>www.twitter.com</td>
-                <td>x</td>
-            </tr>
+            @if (Model.websiteModel.Count() != 0)
+            {
+                @foreach (var website in Model.websiteModel)
+                {
+                    <tr>
+                        <td>@website.Name</td>
+                        <td>@website.Url</td>
+                        @{
+                            var error = false;
+                            foreach (var element in website.Elements)
+                            {
+                                if (element.Status == "INCORRECT")
+                                {
+                                    error = true;
+                                    break;
+                                }
+                            }
+                            if (error)
+                            {
+                                <td>Error!</td>
+                            }
+                            else
+                            {
+                                <td>Correct</td>
+                            }
+                        }
+                        <td>@Html.ActionLink("Details", "Details", "Website", new { @website.Id })</td>
+                    </tr>
+                }
+            }
         </table>
     </div>
 
@@ -48,29 +61,21 @@
         <h1>Websites to check</h1>
         <table class="table-striped">
             <tr>
-                <th class="col-md-3">Name:</th>
-                <th class="col-md-2">Status:</th>
+                <th class="col-md-4">Name:</th>
                 <th class="col-md-6">URL:</th>
-                <th class="col-md-1">Edit:</th>
+                <th class="col-md-2">Status:</th>
             </tr>
-            <tr>
-                <td>Test1</td>
-                <td>Good</td>
-                <td>www.google.com</td>
-                <td>x</td>
-            </tr>
-            <tr>
-                <td>Test2</td>
-                <td>Poor</td>
-                <td>www.facebook.com</td>
-                <td>x</td>
-            </tr>
-            <tr>
-                <td>Test</td>
-                <td>Bad</td>
-                <td>www.twitter.com</td>
-                <td>x</td>
-            </tr>
+            @if (Model.apiModel.Count() != 0)
+            {
+                @foreach (var api in Model.apiModel)
+                {
+                    <tr>
+                        <td>@api.Name</td>
+                        <td>@api.Url</td>
+                        <td>@api.Status</td>
+                    </tr>
+                }
+            }
         </table>
     </div>
 

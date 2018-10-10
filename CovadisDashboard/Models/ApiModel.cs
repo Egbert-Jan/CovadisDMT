@@ -18,5 +18,8 @@ namespace CovadisDashboard.Models
         [Url]
         [DisplayName("Url: ")]
         public string Url { get; set; }
+
+        [DisplayName("Status: ")]
+        public string Status { get; set; }
     }
 }

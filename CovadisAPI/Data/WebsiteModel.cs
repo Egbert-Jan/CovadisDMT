@@ -12,6 +12,9 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Url { get; set; }
 
+        [MaxLength(300)]
+        public string Error { get; set; }
+
         public IList<ElementModel> Elements { get; set; }
     }
 
@@ -29,4 +32,6 @@ namespace CovadisAPI.Data
 
         public WebsiteModel Website { get; set; }
     }
+
+
 }

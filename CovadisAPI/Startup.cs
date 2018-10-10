@@ -123,7 +123,7 @@ namespace CovadisAPI
 
                 context.Websites.Add(new WebsiteModel()
                 {
-                    Url = "https://gms.azurewebsites.net/",
+                    Url = "https://www.google.com/",
                     Elements = new List<ElementModel> { element11, element22, element33 }
                 });
 

@@ -4,11 +4,11 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
-    var max_fields = 10 //maximum input boxes allowed
+    var max_fields = 9 //maximum input boxes allowed
     var wrapper = $("#items"); //Fields wrapper
     var add_button = $("#addElement"); //Add button ID
 
-    var x = 0; //initlal text box count
+    var x = 1; //initlal text box count
     $(add_button).click(function (e) { //on add input button click
         e.preventDefault();
         if (x < max_fields) { //max input box allowed
@@ -27,16 +27,20 @@ $(document).ready(function () {
         e.preventDefault(); $(this).parent('div').remove(); x--;
         $("#Elements").val(x);
     });
-    
+
+
+    //Popupmessage before deleting a config
+    //Then redirect back to the overview
     $(".deleteButton").click(function (e) {
         e.preventDefault();
         var id = $(this).attr("id");
+        var controller = $(this).attr("name");
         var popup = confirm("Are you sure you want to remove this configuration?!");
         if (popup == true) {
-            $.post("/website/delete/" + id).done(location.replace("/website"))
+            $.post("/" + controller + "/delete/" + id).done(location.replace("/" + controller))
         }
         else {
-            $.post("/website/details/" + id)
+            $.post("/" + controller + "/details/" + id)
         }
     });
 

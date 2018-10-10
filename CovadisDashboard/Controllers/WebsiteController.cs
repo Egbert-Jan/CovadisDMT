@@ -18,96 +18,123 @@ namespace CovadisDashboard.Controllers
         {
             ViewData["Message"] = "This is an overview of all the websites that are getting checked.";
 
-            Checks.WebsitesCheck check = new Checks.WebsitesCheck();
-            List<WebsiteModel> Websites = check.RequestWebsites("/websites");
+            Checks.getDB check = new Checks.getDB();
+            List<WebsiteModel> Websites = check.GetObjects<List<WebsiteModel>>("/websites");
 
             return View(Websites);
         }
-        
+
         // GET: /website/details/{id}
         [HttpGet("/website/details/{id:int}")]
         public IActionResult Details(int id)
         {
             ViewData["id"] = id;
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
+            Checks.getDB check = new Checks.getDB();
+            WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
 
+            if(Model.Url == null)
+            {
+                return View("../shared/page404");
+            }
+            
             return View(Model);
         }
 
         // GET: /website/add
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult Create()
         {
             ViewData["Message"] = "Here you can add a websites configuration.";
 
             return View();
         }
 
-        // GET: /website/update/{id}
+        // GET: /website/edit/{id}
         [HttpGet]
-        [Route("/website/update/{id:int}")]
-        public IActionResult Update(int id)
+        [Route("/website/edit/{id:int}")]
+        public IActionResult Edit(int id)
         {
             ViewData["Message"] = "Here you can update an existing websites configuration.";
             ViewData["id"] = id;
 
-            Checks.WebsiteCheck check = new Checks.WebsiteCheck();
-
-            WebsiteModel Model = check.RequestWebsites("/websites/" + id);
+            Checks.getDB check = new Checks.getDB();
+            WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
             
             return View(Model);
         }
-        
+
 
         // POSTS //
 
         // POST: /website/add
         [HttpPost]
-        public async Task<IActionResult> Add(int elements)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(int elements)
         {
-            List<ElementModel> Elements = new List<ElementModel>();
-            WebsiteModel Model = new WebsiteModel();
-
-            Model.Name = Request.Form["Name"];
-            Model.Url = Request.Form["Url"];
-            
-            for(int i = 1; i <= elements; i++)
+            if (ModelState.IsValid)
             {
-                ElementModel elementModel = new ElementModel();
-                string counter = i.ToString();
-                string name = "Element" + i;
-                elementModel.Name = Request.Form[name];
-                Elements.Add(elementModel);
+                List<ElementModel> Elements = new List<ElementModel>();
+                WebsiteModel Model = new WebsiteModel();
+                                
+                Model.Name = Request.Form["Name"];
+                Model.Url = Request.Form["Url"];
+
+                for (int i = 1; i <= elements; i++)
+                {
+                    ElementModel elementModel = new ElementModel();
+                    string counter = i.ToString();
+                    string name = "Element" + i;
+                    if(!String.IsNullOrEmpty(Request.Form[name]))
+                    {
+                        elementModel.Name = Request.Form[name];
+                        Elements.Add(elementModel);
+                    }
+                    else
+                    {
+                        elements++;
+                    }
+                }
+
+                Model.Elements = Elements;
+
+                var responseString = (String)null;
+
+                try
+                {
+                    var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", Model);
+                    responseString = await response.Content.ReadAsStringAsync();
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                //return Content($"{responseString}");
+                return RedirectToAction("/index");
             }
-
-            Model.Elements = Elements;
-
-            var responseString = (String)null;
-
-            try
+            else
             {
-                var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/websites", Model);
-                responseString = await response.Content.ReadAsStringAsync();
+                WebsiteModel Model = new WebsiteModel();
+                Model.Url = Request.Form["Url"];
+                Model.Name = Request.Form["Name"];
+                return View(Model);
             }
-            catch(Exception e)
-            {
-
-            }
-
-            //return Content($"{responseString}");
-            return Redirect("/website");
         }
 
 
         // PUTS //
-        // PUT: /website/update/{id}
-        [HttpPost("/website/update/{id:int}")]
-        public async Task<IActionResult> Update(WebsiteModel Model, int elements, int id)
+        // PUT: /website/edit/{id}
+        [HttpPost("/website/edit/{id:int}")]
+        public async Task<IActionResult> Edit(WebsiteModel Model, int elements, int id)
         {
+            if (id != Model.Id)
+            {
+                return View("../shared/page404");
+            }
+
             List<ElementModel> Elements = new List<ElementModel>();
-            
+
             Model.Name = Request.Form["Name"];
             Model.Url = Request.Form["Url"];
 
@@ -124,7 +151,7 @@ namespace CovadisDashboard.Controllers
             }
 
             Model.Elements = Elements;
-            
+
             var responseString = (String)null;
 
             try
@@ -136,8 +163,9 @@ namespace CovadisDashboard.Controllers
             {
 
             }
-            
-            return Content($"{responseString}");
+
+            //return Content($"{responseString}");
+            return Redirect("/website");
         }
 
 
@@ -153,7 +181,7 @@ namespace CovadisDashboard.Controllers
                 var response = await Startup.client.DeleteAsync("http://localhost:51226/api/websites/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    responseMessage = (response.Content.ReadAsAsync<string>().Result);
+                    responseMessage = (response.RequestMessage.ToString());
                 }
                 else
                 {
@@ -165,8 +193,14 @@ namespace CovadisDashboard.Controllers
 
             }
 
-            return Redirect("/website");
+            //return Content($"{responseString}");
+            return RedirectToAction("/index");
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View("../shared/page404");
+        }
     }
 }

@@ -1,35 +1,60 @@
-﻿@model WebsiteModel
+﻿@model CovadisDashboard.Models.WebsiteModel
 
-<div class="row">
-    <div class="col-sm-offset-1 col-sm-11">
+@{
+    ViewData["Title"] = "Details";
+}
 
-        <h2>@ViewData["Title"]</h2>
-        <h3>@ViewData["Message"]</h3>
+<h2>Details</h2>
 
-        <table class="table-striped">
-            <tr>
-                <th class="col-sm-5">Url</th>
-                <th class="col-sm-6">Elementen</th>
-                <th class="col-sm-1">Delete</th>
-            </tr>
-            <tr>
-                <td>@Model.Url <br /></td>
-                <td>
-                    @{
-                        foreach (var element in Model.Elements)
-                        {
-
-                            @element.Name <span>-</span>
-                            @element.Status<span> || </span>
-
-                        }
-                    }
-                </td>
-                <td>
-                    <button id="@Model.Id" class="deleteButton btn btn-danger">Delete</button>
-                </td>
-
-            </tr>
-        </table>
-    </div>
+<div>
+    <h4>Api Configuration</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dt>Elements:</dt>
+        <dd>----------</dd>
+        @{
+            foreach (var element in Model.Elements)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => element.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => element.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => element.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => element.Status)
+                </dd>
+            }
+        }
+    </dl>
 </div>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Delete" id="@(Model.Id)" name="website" class="deleteButton">Delete</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+

@@ -132,9 +132,6 @@ namespace CovadisAPI.Controllers
         }
 
 
-
-
-
         // PUT api/websites/5
         [HttpPut]
         public void Put([FromBody] WebsiteModel website)
@@ -149,6 +146,43 @@ namespace CovadisAPI.Controllers
 
 
 
+        [HttpGet("logs")]
+        public List<WebsiteLog> GetLog()
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                var websites = context.WebsiteLog.Take(5).ToList();
+
+                foreach (var x in websites)
+                {
+                    //var elements = context.ElementLog.Where(w => w.WebsiteID == x.WebsiteID).ToList();
+                    var elements = context.ElementLog.Where(w => w.WebsiteID == x.WebsiteID && w.TimeStamp == x.TimeStamp).ToList();
+
+                    x.Elements = elements;
+                }
+
+                return websites;
+            }
+        }
+
+
+        [HttpGet("logs/{id}")]
+        public List<WebsiteLog> GetLog(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var websites = context.WebsiteLog.Where(w => w.WebsiteID == id).ToList();
+
+                foreach (var website in websites)
+                {
+                    var elements = context.ElementLog.Where(w => w.WebsiteID == website.WebsiteID && w.TimeStamp == website.TimeStamp).ToList();
+
+                    website.Elements = elements;
+                }
+
+                return websites;
+            }
+        }
 
 
 

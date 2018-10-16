@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,9 +21,13 @@ namespace CovadisAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GetAsync()
         {
+            //Debug.WriteLine("hier:");
+            //Debug.WriteLine(Request.Headers);
+            //Debug.WriteLine(Request.Headers["app-token"].ToString());
+
             List<object> checkedWebsites = new List<object> { };
 
-            WebsiteCheck check = new WebsiteCheck();
+            WebsiteCheck check = new WebsiteCheck(Request.Headers["app-token"].ToString());
             using (var context = new ApplicationDbContext())
             {
                 foreach (var website in context.Websites)
@@ -127,37 +132,57 @@ namespace CovadisAPI.Controllers
         }
 
 
-
-
-
         // PUT api/websites/5
         [HttpPut]
         public void Put([FromBody] WebsiteModel website)
         {
             using (var context = new ApplicationDbContext())
             {
-                var oldConfig = context.Websites.Find(website.Id);
-                List<ElementModel> elements = context.Elements.Include(e => e.Website).Where(w => w.Website.Id == website.Id).ToList();
-
-                if(oldConfig != null)
-                {
-                    oldConfig.Url = website.Url;
-
-                    foreach (var element in elements)
-                    {
-                        context.Elements.Remove(element);
-                    }
-
-                    oldConfig.Elements = website.Elements;
-
-                    context.SaveChanges();
-                }
+                context.Websites.Update(website);
+                context.SaveChanges();
             }
         }
 
 
 
 
+        [HttpGet("logs")]
+        public List<WebsiteLog> GetLog()
+        {
+            using(var context = new ApplicationDbContext())
+            {
+                var websites = context.WebsiteLog.Take(5).ToList();
+
+                foreach (var x in websites)
+                {
+                    //var elements = context.ElementLog.Where(w => w.WebsiteID == x.WebsiteID).ToList();
+                    var elements = context.ElementLog.Where(w => w.WebsiteID == x.WebsiteID && w.TimeStamp == x.TimeStamp).ToList();
+
+                    x.Elements = elements;
+                }
+
+                return websites;
+            }
+        }
+
+
+        [HttpGet("logs/{id}")]
+        public List<WebsiteLog> GetLog(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var websites = context.WebsiteLog.Where(w => w.WebsiteID == id).ToList();
+
+                foreach (var website in websites)
+                {
+                    var elements = context.ElementLog.Where(w => w.WebsiteID == website.WebsiteID && w.TimeStamp == website.TimeStamp).ToList();
+
+                    website.Elements = elements;
+                }
+
+                return websites;
+            }
+        }
 
 
 

@@ -9,7 +9,13 @@ namespace CovadisAPI.Data
         public DbSet<ServicesDataModel> Services { get; set; }
         public DbSet<WebsiteModel> Websites { get; set; }
         public DbSet<ElementModel> Elements { get; set; }
+
+        //Configurations
         public DbSet<ConfigurationModel> GlobalConfiguration { get; set; }
+
+        //Logs
+        public DbSet<WebsiteLog> WebsiteLog { get; set; }
+        public DbSet<ElementLog> ElementLog { get; set; }
 
         public ApplicationDbContext()
         {
@@ -20,7 +26,7 @@ namespace CovadisAPI.Data
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(@"Server =.; Database = CovadisDMT;Trusted_Connection=True;MultipleActiveResultSets=true ");
+            optionsBuilder.UseSqlServer(@"Server =.\MSSQLSERVER01; Database = CovadisDMT;Trusted_Connection=True;MultipleActiveResultSets=true ");
         }
 
 

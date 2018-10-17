@@ -100,6 +100,11 @@ namespace CovadisAPI
                     Value = "15"
                 });
 
+                context.GlobalConfiguration.Add(new ConfigurationModel()
+                {
+                    ConfigName = "MessageAfterTrials",
+                    Value = "2"
+                });
 
 
                 ElementModel element1 = new ElementModel { Name = "Hello" };

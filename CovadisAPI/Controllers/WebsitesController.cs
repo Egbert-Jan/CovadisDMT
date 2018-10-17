@@ -151,7 +151,7 @@ namespace CovadisAPI.Controllers
         {
             using(var context = new ApplicationDbContext())
             {
-                var websites = context.WebsiteLog.Take(5).ToList();
+                var websites = context.WebsiteLog.ToList();
 
                 foreach (var x in websites)
                 {

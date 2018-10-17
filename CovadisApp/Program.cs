@@ -56,7 +56,7 @@ namespace CovadisApp
 
 
                 //Header die er voor zorgt dat er een log wordt weg geschreven
-                //client.DefaultRequestHeaders.Add("app-token", "lolxddezeapptokenislit12345");
+                client.DefaultRequestHeaders.Add("app-token", "lolxddezeapptokenislit12345");
 
                 using (HttpResponseMessage res = await client.GetAsync("https://localhost:44334/api/websites"))
                 using (HttpContent content = res.Content)

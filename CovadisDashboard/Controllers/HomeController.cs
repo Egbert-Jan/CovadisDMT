@@ -14,7 +14,7 @@ namespace CovadisDashboard.Controllers
             List<WebsiteModel> Websites = check.GetObjects<List<WebsiteModel>>("/websites");
             //List of all the Apis
             List<ApiModel> Apis = check.GetObjects<List<ApiModel>>("/apis");
-            MultipleModel Model = new MultipleModel();
+            HomeCombinedModel Model = new HomeCombinedModel();
             //Model to return to the view
             Model.apiModel = Apis;
             Model.websiteModel = Websites;

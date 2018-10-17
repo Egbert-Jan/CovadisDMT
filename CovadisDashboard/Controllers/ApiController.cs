@@ -32,11 +32,11 @@ namespace CovadisDashboard.Controllers
             Checks.getDB check = new Checks.getDB();
             ApiModel Model = check.GetObject<ApiModel>("/apis/" + id);
 
-            //ApiModel Model = new ApiModel();
-            //Model.Url = "https://www.nu.nl";
-            //Model.Name = "Test";
-            //Model.Id = 1;
-            
+            if (Model.Url == null)
+            {
+                return View("../shared/page404");
+            }
+
             return View(Model);
         }
 

@@ -36,9 +36,14 @@ namespace CovadisDashboard.Controllers
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
-            WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
+            WebsiteModel Website = check.GetObject<WebsiteModel>("/websites/" + id);
+            List<WebsiteLogModel> Log = check.GetObject<List<WebsiteLogModel>>("/websites/logs/" + id);
 
-            if(Model.Url == null)
+            WebsiteDetailModel Model = new WebsiteDetailModel();
+            Model.Website = Website;
+            Model.WebsiteLog = Log;
+
+            if (Model.Website.Url == null)
             {
                 return View("../shared/page404");
             }
@@ -65,7 +70,12 @@ namespace CovadisDashboard.Controllers
 
             Checks.getDB check = new Checks.getDB();
             WebsiteModel Model = check.GetObject<WebsiteModel>("/websites/" + id);
-            
+
+            if (Model.Url == null)
+            {
+                return View("../shared/page404");
+            }
+
             return View(Model);
         }
 

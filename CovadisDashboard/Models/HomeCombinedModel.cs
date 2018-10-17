@@ -2,7 +2,7 @@
 
 namespace CovadisDashboard.Models
 {
-    public class MultipleModel
+    public class HomeCombinedModel
     {
         public List<ApiModel> apiModel { get; set; }
         public List<WebsiteModel> websiteModel { get; set; }

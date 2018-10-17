@@ -15,10 +15,10 @@ namespace CovadisDashboard.Controllers
             //List of all the Apis
             List<ApiModel> Apis = check.GetObjects<List<ApiModel>>("/apis");
             MultipleModel Model = new MultipleModel();
+            //Model to return to the view
             Model.apiModel = Apis;
             Model.websiteModel = Websites;
-
-
+            
             return View(Model);
         }
 

@@ -17,15 +17,16 @@
 
     <div class="col-sm-5 rightBorder">
         <h1>API's to check</h1>
-        <table class="table-striped">
-            <tr>
-                <th class="col-md-2">Name:</th>
-                <th class="col-md-6">URL:</th>
-                <th class="col-md-2">Status:</th>
-                <th class="col-md-1">View:</th>
-            </tr>
-            @if (Model.websiteModel.Count() != 0)
-            {
+        @if (Model.websiteModel.Count() != 0)
+        {
+            <table class="table-striped">
+                <tr>
+                    <th class="col-md-2">Name:</th>
+                    <th class="col-md-6">URL:</th>
+                    <th class="col-md-2">Status:</th>
+                    <th class="col-md-1">View:</th>
+                </tr>
+
                 @foreach (var website in Model.websiteModel)
                 {
                     <tr>
@@ -53,20 +54,26 @@
                         <td>@Html.ActionLink("Details", "Details", "Website", new { @website.Id })</td>
                     </tr>
                 }
-            }
-        </table>
+
+            </table>
+        }
+        else
+        {
+            <h2>No websites to display!</h2>
+        }
     </div>
 
     <div class="col-sm-5">
         <h1>Websites to check</h1>
-        <table class="table-striped">
-            <tr>
-                <th class="col-md-4">Name:</th>
-                <th class="col-md-6">URL:</th>
-                <th class="col-md-2">Status:</th>
-            </tr>
-            @if (Model.apiModel.Count() != 0)
-            {
+        @if (Model.apiModel.Count() != 0)
+        {
+            <table class="table-striped">
+                <tr>
+                    <th class="col-md-4">Name:</th>
+                    <th class="col-md-6">URL:</th>
+                    <th class="col-md-2">Status:</th>
+                </tr>
+
                 @foreach (var api in Model.apiModel)
                 {
                     <tr>
@@ -75,8 +82,14 @@
                         <td>@api.Status</td>
                     </tr>
                 }
-            }
-        </table>
-    </div>
 
+
+            </table>
+
+        }
+        else
+        {
+            <h2>No Apis to display!</h2>
+        }
+    </div>
 </div>

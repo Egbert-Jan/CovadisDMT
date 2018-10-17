@@ -160,5 +160,14 @@ namespace CovadisAPI.Checks
             //Eind if
             }
         }
+
+
+
+
+        public void SendMail()
+        {
+            MailData md = new MailData();
+            md.SendMail("TestMail", "Hallo dit is een test mail");
+        }
     }
 }

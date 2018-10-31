@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace CovadisAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ApiController
+    public class ApisController
     {
         ErrorModel error = new ErrorModel();
 
@@ -33,7 +33,7 @@ namespace CovadisAPI.Controllers
                                 Id = api.Id,
                                 Name = api.Name,
                                 Url = api.Url,
-                                Value = res.StatusCode.ToString()
+                                Status = res.StatusCode.ToString()
                             };
 
                             Apis.Add(apimodel);
@@ -47,7 +47,7 @@ namespace CovadisAPI.Controllers
                             Id = api.Id,
                             Name = api.Name,
                             Url = api.Url,
-                            Value = "NULL",
+                            Status = "NULL",
                             Error = "Error met de url"
                         };
                         Apis.Add(apimodel);
@@ -75,7 +75,7 @@ namespace CovadisAPI.Controllers
                         var apimodel = new ApiModel()
                         {
                             Url = api.Url,
-                            Value = res.StatusCode.ToString()
+                            Status = res.StatusCode.ToString()
                         };
                         return apimodel;
                     }

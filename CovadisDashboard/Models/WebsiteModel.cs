@@ -20,7 +20,7 @@ namespace CovadisDashboard.Models
         [Url]
         [DisplayName("Url:")]
         public string Url { get; set; }
-
+        
         [DisplayName("Elements: ")]
         public List<ElementModel> Elements { get; set; }
         

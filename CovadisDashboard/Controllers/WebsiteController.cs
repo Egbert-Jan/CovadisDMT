@@ -1,10 +1,15 @@
 ﻿using CovadisDashboard.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+
+// Global config
+
+//Volume = Properties.Settings.Default.Volume;
+
+// --- - - -- -- - - - - -//
 
 namespace CovadisDashboard.Controllers
 {

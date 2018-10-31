@@ -17,7 +17,9 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string Url { get; set; }
 
-        public string Value { get; set; }
+        public string Status { get; set; }
+
+        public string LastData { get; set; }
 
         public string Error { get; set; }
 

@@ -132,6 +132,17 @@ namespace CovadisAPI
                     Elements = new List<ElementModel> { element11, element22, element33 }
                 });
 
+
+                context.Apis.Add(new ApiModel()
+                {
+                    Url = "https://www.google.com/"
+                });
+
+                context.Apis.Add(new ApiModel()
+                {
+                    Url = "https://gmsapi.azurewebsites.net/Record/3"
+                });
+
                 context.SaveChanges();
             }
         }

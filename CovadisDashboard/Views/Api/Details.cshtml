@@ -1,47 +1,53 @@
-﻿@model CovadisDashboard.Models.ApiModel
+﻿@model CovadisDashboard.Models.WebsiteModel
 
 @{
     ViewData["Title"] = "Details";
+    int correct = 0;
+    int incorrect = 0;
 }
 
-@{
-    if (Model.Name == null)
-    {
-        <h1>Error: no api configuration found with this id!</h1>
-    }
-    else
-    {
-        <h2>Details</h2>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="col-sm-offset-1 col-sm-11">
+            <h2>Details</h2>
 
-        <div>
-            <h4>Api Configuration</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Id)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Id)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Url)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Url)
-                </dd>
-            </dl>
+            <div>
+                <h4>Api Configuration</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Url)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Url)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                <a asp-action="Delete" id="@(Model.Id)" name="api" class="deleteButton">Delete</a> |
+                <a asp-action="Index">Back to List</a>
+            </div>
         </div>
-        <div>
-            @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-            <a asp-action="Delete" id="@(Model.Id)" name="api" class="deleteButton">Delete</a> |
-            <a asp-action="Index">Back to List</a>
-        </div>
-    }
-}
 
+
+    <div class="col-sm-6">
+        <div id="piechart" style="width: 400px; height: 500px;">
+            <div id="correct" class="hidden">@correct</div>
+            <div id="incorrect" class="hidden">@incorrect</div>
+        </div>
+    </div>
+
+</div>

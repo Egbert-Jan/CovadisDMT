@@ -1,62 +1,91 @@
-﻿@model CovadisDashboard.Models.WebsiteModel
+﻿@model CovadisDashboard.Models.WebsiteDetailModel
 
 @{
     ViewData["Title"] = "Details";
+    int correct = 0;
+    int incorrect = 0;
 }
-<div class="row">
-    <div class="col-sm-offset-1 col-sm-11">
-        <h2>Details</h2>
 
-        <div>
-            <h4>Api Configuration</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.Id)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Id)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Url)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Url)
-                </dd>
-                <dt>Elements:</dt>
-                <dd>----------</dd>
-                @{
-                    foreach (var element in Model.Elements)
-                    {
-                        <dt>
-                            @Html.DisplayNameFor(model => element.Name)
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => element.Name)
-                        </dd>
-                        <dt>
-                            @Html.DisplayNameFor(model => element.Status)
-                        </dt>
-                        <dd>
-                            @Html.DisplayFor(model => element.Status)
-                        </dd>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="col-sm-offset-1 col-sm-11">
+            <h2>Details</h2>
+
+            <div>
+                <h4>Api Configuration</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Website.Id)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Website.Id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Website.Name)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Website.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Website.Url)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Website.Url)
+                    </dd>
+                    <dt>Elements:</dt>
+                    <dd>----------</dd>
+                    @{
+                        foreach (var element in Model.Website.Elements)
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => element.Name)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => element.Name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => element.Status)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => element.Status)
+                            </dd>
+                        }
                     }
-                }
-            </dl>
+                </dl>
+            </div>
         </div>
 
         <div>
             @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-            <a asp-action="Delete" id="@(Model.Id)" name="website" class="deleteButton">Delete</a> |
+            <a asp-action="Delete" id="@(Model.Website.Id)" name="website" class="deleteButton">Delete</a> |
             <a asp-action="Index">Back to List</a>
         </div>
     </div>
+
+    @{ 
+        foreach(var log in Model.WebsiteLog)
+        {
+            foreach(var element in log.Elements)
+            {
+                if(element.status == "CORRECT")
+                {
+                    correct++;
+                }
+                else
+                {
+                    incorrect++;
+                }
+            }
+        }
+    }
+
+
+    <div class="col-sm-6">
+        <div id="piechart" style="width: 400px; height: 500px;">
+            <div id="correct" class="hidden">@correct</div>
+            <div id="incorrect" class="hidden">@incorrect</div>
+        </div>
+    </div>
+
 </div>
-
-

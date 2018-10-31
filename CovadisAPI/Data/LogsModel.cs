@@ -24,6 +24,8 @@ namespace CovadisAPI.Data
         [MaxLength(300)]
         public string TimeStamp { get; set; }
 
+        public Boolean HasSendMail { get; set; }
+
         public IList<ElementLog> Elements { get; set; }
 
 

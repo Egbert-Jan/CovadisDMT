@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System;
+using Newtonsoft.Json;
 
 namespace CovadisAPI.Checks
 {
@@ -79,9 +80,13 @@ namespace CovadisAPI.Checks
                             }
                         }
 
+                        
+
                         //AddToLog
                         AddToLog(web);
-                        
+
+                        //SendMail(web);
+
                         return web;
                     }
                     else
@@ -112,9 +117,12 @@ namespace CovadisAPI.Checks
 
                     faultyWebsite.Elements.Add(elem);
                 }
+                
 
                 //AddToLog
                 AddToLog(faultyWebsite);
+
+                //SendMail(faultyWebsite);
 
                 return faultyWebsite;
 
@@ -126,13 +134,15 @@ namespace CovadisAPI.Checks
 
         private void AddToLog(WebsiteModel website)
         {
-            if(Token != null && Token == "lolxddezeapptokenislit12345")
-            {
+            //if(Token != null && Token == "lolxddezeapptokenislit12345")
+            //{
                 DateTime dateTime = DateTime.UtcNow;
 
                 Debug.WriteLine(dateTime);
+            SendMail(website);
+            //SendMail(website);
 
-                using (var context = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext())
                 {
                     var web = new WebsiteLog()
                     {
@@ -157,17 +167,139 @@ namespace CovadisAPI.Checks
                     context.SaveChanges();
                 }
 
+            
             //Eind if
-            }
+            //}
         }
 
 
 
 
-        public void SendMail()
+        public void SendMail(WebsiteModel website)
         {
-            MailData md = new MailData();
-            md.SendMail("TestMail", "Hallo dit is een test mail");
+            Boolean hasError = false;
+            Boolean hasSendMail = false;
+  
+
+            using (var context = new ApplicationDbContext())
+            {
+
+                var MessageAfterTrials = Int32.Parse(context.GlobalConfiguration.Find(2).Value);
+
+                var websites = context.WebsiteLog.Where(w => w.WebsiteID == website.Id).OrderByDescending(w => w.Id).Take(MessageAfterTrials).ToList();
+
+
+                Debug.WriteLine("");
+                foreach (var web in websites)
+                {
+                    Debug.WriteLine(web.Id + " en " + web.WebsiteID + ", " + web.Url + ", mail: " + web.HasSendMail + ", error: " + web.Error);
+
+                    if(web.Error != null)
+                    {
+                        hasError = true;
+                    }
+                    if(web.HasSendMail == true)
+                    {
+                        hasSendMail = true;
+                    }
+                }
+                Debug.WriteLine("");
+
+                //ALS DE SITE EEN FOUTE LOG HEEFT
+                if(hasError == true)
+                {
+                    //Debug.WriteLine("Website " + website.Url + " Heeft een error");
+
+                    if(hasSendMail == false)
+                    {
+                        Debug.WriteLine("Website " + website.Url + " Mail gestuurd!!!!!!!!");
+                        MailData mail = new MailData();
+
+                        String bodyString = 
+                            "<h1>Hello,</h1><br>" +
+                            "<p>The site " + website.Url + " is offline for " + MessageAfterTrials + " trials.</p> <br>" +
+                            "<p>You get this message because blablabla</p>";
+
+                        mail.SendMail("Website: " + website.Url + " is offline for " + MessageAfterTrials + " trials", bodyString);
+
+                        //Maak hasSendMail true
+                        foreach (var web in websites)
+                        {
+                            web.HasSendMail = true;
+                            context.Update(web);
+                        }
+
+                    }
+                }
+
+
+                context.SaveChanges();
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //Boolean heeftError = false;
+ //           Boolean hasSendMail = false;
+
+ //           //Als site 2 keer fout is geweest
+ //           using (var context = new ApplicationDbContext())
+ //           {
+ //               var websites = context.WebsiteLog.Where(w => w.WebsiteID == website.Id).OrderByDescending(w => w.Id).Take(2).ToList();
+
+ //               foreach (var web in websites)
+ //               {
+ //                   Debug.WriteLine("id: " + web.Id + " error: " + web.Error);
+ //                   //Debug.Write(JsonConvert.SerializeObject(web));
+ //                   if (web.Error != null)
+ //                   {
+ //                       heeftError = true;
+ //                   }
+ //                   if(web.HasSendMail == true)
+ //                   {
+ //                       hasSendMail = true;
+ //                   }
+ //               }
+
+ //               if(heeftError == true)
+ //               {
+ //                   Debug.WriteLine("ID" + website.Id + " in de logs is die een of meer keer fout");
+ //                   if (hasSendMail == false)
+ //                   {
+ //                       Debug.WriteLine("mail is gestuurd voor het ID: " + websites[0].WebsiteID);
+
+
+ //                       foreach (var web in websites)
+ //                       {
+ //                           Debug.WriteLine("id: " + web.Id + "mail send is: " + web.HasSendMail);
+ //                           web.HasSendMail = true;
+ //                           context.Update(web);
+
+ //                           context.SaveChanges();
+
+ //                       }
+
+ //                       MailData md = new MailData();
+ //                       md.SendMail("Error met een website", "WebsiteID: " + website.Id);
+ //                   }
+ //               }
+
+               
+ //           }
+
+
+//}

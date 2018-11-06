@@ -71,6 +71,12 @@
                         <dd>
                             @Html.DisplayFor(model => row.Error)
                         </dd>
+                        <dt>
+                            Details:
+                        </dt>
+                        <dd>
+                            @Html.ActionLink("Details", "Details", new { @row.Id })
+                        </dd>
                         <hr />
                     }
                 }

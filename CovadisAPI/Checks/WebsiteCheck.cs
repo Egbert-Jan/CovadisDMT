@@ -52,6 +52,7 @@ namespace CovadisAPI.Checks
                         var web = new WebsiteModel
                         {
                             Id = website.Id,
+                            Name = website.Name,
                             Url = website.Url,
                             Error = null,
                             Elements = new List<ElementModel> { }
@@ -101,6 +102,7 @@ namespace CovadisAPI.Checks
                 var faultyWebsite = new WebsiteModel
                 {
                     Id = website.Id,
+                    Name = website.Name,
                     Url = website.Url,
                     Error = "URL Error",
                     Elements = new List<ElementModel> { }

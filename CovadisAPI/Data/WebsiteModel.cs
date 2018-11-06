@@ -9,6 +9,9 @@ namespace CovadisAPI.Data
         public int Id { get; set; }
 
         [Required]
+        public string Name { get; set; }
+
+        [Required]
         [MaxLength(300)]
         public string Url { get; set; }
 

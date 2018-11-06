@@ -29,7 +29,7 @@ namespace CovadisDashboard.Controllers
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
-            ConfigModel Model = check.GetObject<ConfigModel>("/configuration/" + id);
+            ConfigModel Model = check.GetObject<ConfigModel>("/configurations/" + id);
 
             if (Model.ConfigName == null)
             {
@@ -48,7 +48,7 @@ namespace CovadisDashboard.Controllers
             ViewData["id"] = id;
 
             Checks.getDB check = new Checks.getDB();
-            ConfigModel Model = check.GetObject<ConfigModel>("/configuration/" + id);
+            ConfigModel Model = check.GetObject<ConfigModel>("/configurations/" + id);
 
             return View(Model);
         }
@@ -70,7 +70,7 @@ namespace CovadisDashboard.Controllers
 
             try
             {
-                var response = await Startup.client.PutAsJsonAsync("http://localhost:51226/api/configuration", Model);
+                var response = await Startup.client.PutAsJsonAsync("http://localhost:51226/api/configurations", Model);
                 responseString = await response.Content.ReadAsStringAsync();
             }
             catch (Exception e)

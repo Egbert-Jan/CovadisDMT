@@ -115,6 +115,7 @@ namespace CovadisAPI
 
                 context.Websites.Add(new WebsiteModel()
                 {
+                    Name = "Graafschap",
                     Url = "https://gms.azurewebsites.net/",
                     Elements = new List<ElementModel> { element1, element2, element3 }
                 });
@@ -128,6 +129,7 @@ namespace CovadisAPI
 
                 context.Websites.Add(new WebsiteModel()
                 {
+                    Name = "Google",
                     Url = "https://www.google.com/",
                     Elements = new List<ElementModel> { element11, element22, element33 }
                 });

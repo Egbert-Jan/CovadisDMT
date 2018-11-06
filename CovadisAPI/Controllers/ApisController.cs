@@ -87,8 +87,15 @@ namespace CovadisAPI.Controllers
                 }
                 catch
                 {
-                    error.Message = "de api bestaat niet";
-                    return error;
+                    var apimodel = new ApiModel()
+                    {
+                        Id = api.Id,
+                        Name = api.Name,
+                        Url = api.Url,
+                        LastData = api.LastData,
+                        Error = "Error"
+                    };
+                    return apimodel;
                 }
                 
             }

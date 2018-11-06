@@ -3,6 +3,10 @@ for details on configuring this project to bundle and minify static web assets. 
 body {
 }
 
+#refreshButton {
+    margin-top: 15px;
+}
+
 .page404{
     background-image: url(../images/starwars404.jpg);
     background-repeat: no-repeat;

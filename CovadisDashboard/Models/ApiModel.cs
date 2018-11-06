@@ -21,5 +21,8 @@ namespace CovadisDashboard.Models
 
         [DisplayName("Status: ")]
         public string Status { get; set; }
+
+        [DisplayName("Error: ")]
+        public string Error { get; set; }
     }
 }

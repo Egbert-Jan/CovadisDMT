@@ -9,11 +9,7 @@
 
 <div class="row">
 
-    <div class="col-sm-2 rightBorder">
-        <h2>Add new check</h2>
-        @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
-        @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
-    </div>
+
 
     <div class="col-sm-5 rightBorder">
         <h1>API's to check</h1>
@@ -80,9 +76,9 @@
                         <td>@api.Name</td>
                         <td>@api.Url</td>
                         <td>@api.Status</td>
+                        <td>@Html.ActionLink("Details", "Details", "Api", new { @api.Id })</td>
                     </tr>
                 }
-
 
             </table>
 
@@ -91,5 +87,13 @@
         {
             <h2>No Apis to display!</h2>
         }
+    </div>
+    <div class="col-sm-2">
+
+    </div>
+    <div class="col-sm-12 rightBorder">
+        <h2>Add new check</h2>
+        @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
     </div>
 </div>

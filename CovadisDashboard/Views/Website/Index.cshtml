@@ -1,9 +1,11 @@
 ﻿@model List<WebsiteModel>
 @{
     ViewData["Title"] = "Index";
+    int correct = 0;
+    int incorrect = 0;
 }
 <div class="row">
-    <div class="col-sm-offset-1 col-sm-11">
+    <div class="col-sm-offset-1 col-sm-6">
 
         @if (Model.Count == 0)
         {
@@ -13,7 +15,14 @@
         else
         {
 
+
             <h3>@ViewData["Message"]</h3>
+            <hr />
+
+            <div>
+                @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
+            </div>
+
             <hr />
 
             <dl class="dl-horizontal">
@@ -51,6 +60,14 @@
                                 <dd>
                                     @Html.DisplayFor(model => element.Status)
                                 </dd>
+                                if (element.Status == "CORRECT")
+                                {
+                                    correct++;
+                                }
+                                else
+                                {
+                                    incorrect++;
+                                }
                             }
                         }
                         <dt>
@@ -79,12 +96,19 @@
                         </dd>
                         <hr />
                     }
+
+
                 }
             </dl>
-            <div>
-                @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
-            </div>
         }
-
     </div>
+
+    <div class="col-sm-5">
+        <h3>Global status:</h3>
+        <div id="piechart" style="width: 400px; height: 500px;">
+            <div id="correct" class="hidden">@correct</div>
+            <div id="incorrect" class="hidden">@incorrect</div>
+        </div>
+    </div>
+
 </div>

@@ -4,14 +4,11 @@
 }
 
 <div class="row">
-    <div><button id="refreshButton" class="btn btn-primary center-block">Refresh the results!</button></div>
-</div>
-
-<div class="row">
+    <div class="col-sm-12"><button id="refreshButton" class="btn btn-primary center-block">Refresh the results!</button></div>
 
 
 
-    <div class="col-sm-5 rightBorder">
+    <div class="col-sm-offset-1 col-sm-5 rightBorder">
         <h1>API's to check</h1>
         @if (Model.websiteModel.Count() != 0)
         {
@@ -88,10 +85,8 @@
             <h2>No Apis to display!</h2>
         }
     </div>
-    <div class="col-sm-2">
 
-    </div>
-    <div class="col-sm-12 rightBorder">
+    <div class="col-sm-offset-1 col-sm-11 rightBorder">
         <h2>Add new check</h2>
         @Html.ActionLink("Add Website", "Create", "Website", new { }, new { @class = "btn btn-primary" })
         @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })

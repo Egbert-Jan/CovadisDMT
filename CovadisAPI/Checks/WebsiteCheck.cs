@@ -136,8 +136,8 @@ namespace CovadisAPI.Checks
 
         private void AddToLog(WebsiteModel website)
         {
-            if (Token != null && Token == "lolxddezeapptokenislit12345")
-            {
+            //if (Token != null && Token == "lolxddezeapptokenislit12345")
+            //{
                 DateTime dateTime = DateTime.UtcNow;
 
                 Debug.WriteLine(dateTime);
@@ -170,8 +170,8 @@ namespace CovadisAPI.Checks
                 }
 
 
-            //Eind if
-        }
+        //    //Eind if
+        //}
     }
 
 

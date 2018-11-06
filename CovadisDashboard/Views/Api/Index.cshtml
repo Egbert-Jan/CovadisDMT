@@ -8,45 +8,68 @@
 
         @if (Model.Count() == 0)
         {
-        <h1>There are no API's to be checked.<br /> Please start by adding one first!</h1>
-        @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
+            <h1>There are no API's to be checked.<br /> Please start by adding one first!</h1>
+            @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
         }
         else
         {
 
 
-        <h3>@ViewData["Message"]</h3>
+            <h3>@ViewData["Message"]</h3>
 
-        <dl class="dl-horizontal">
+            <dl class="dl-horizontal">
 
-            @foreach (var row in Model)
-            {
-                if (row.Url != null && row.Id != 0)
+                @foreach (var row in Model)
                 {
-                    <dt>
-                        @Html.DisplayNameFor(model => row.Name)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => row.Name)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => row.Url)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => row.Url)
-                    </dd>
-                    <dt>
-                        Details:
-                    </dt>
-                    <dd>
-                        @Html.ActionLink("Details", "Details", new { @row.Id })
-                    </dd>
+                    if (row.Error == null)
+                    {
+
+                        if (row.Url != null && row.Id != 0)
+                        {
+                            <dt>
+                                @Html.DisplayNameFor(model => row.Name)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => row.Url)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Url)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => row.Status)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => row.Status)
+                            </dd>
+                            <dt>
+                                Details:
+                            </dt>
+                            <dd>
+                                @Html.ActionLink("Details", "Details", new { @row.Id })
+                            </dd>
+                            <hr />
+                        }
+                    }
+                    else
+                    {
+                        <dt>Error:</dt>
+                        <dd>Unable te retreive data for this configuration!</dd>
+                        <dt>
+                            Message
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => row.Error)
+                        </dd>
+                        <hr />
+                    }
                 }
-            }
-        </dl>
-        <div>
-            @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
-        </div>
+            </dl>
+            <div>
+                @Html.ActionLink("Add Api", "Create", "Api", new { }, new { @class = "btn btn-primary" })
+            </div>
         }
 
     </div>

@@ -81,7 +81,7 @@ namespace CovadisDashboard.Controllers
 
                 try
                 {
-                    var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/api", Model);
+                    var response = await Startup.client.PostAsJsonAsync("http://localhost:51226/api/apis", Model);
                     responseString = await response.Content.ReadAsStringAsync();
                 }
                 catch (Exception e)
@@ -100,7 +100,7 @@ namespace CovadisDashboard.Controllers
 
 
         // PUTS //
-        // PUT: /website/update/{id}
+        // PUT: /api/edit/{id}
         [HttpPost("/api/edit/{id:int}")]
         public async Task<IActionResult> Edit(ApiModel Model, int id)
         {
@@ -112,7 +112,7 @@ namespace CovadisDashboard.Controllers
 
             try
             {
-                var response = await Startup.client.PutAsJsonAsync("http://localhost:51226/api/api", Model);
+                var response = await Startup.client.PutAsJsonAsync("http://localhost:51226/api/apis", Model);
                 responseString = await response.Content.ReadAsStringAsync();
             }
             catch (Exception e)
@@ -134,7 +134,7 @@ namespace CovadisDashboard.Controllers
 
             try
             {
-                var response = await Startup.client.DeleteAsync("http://localhost:51226/api/websites/" + id);
+                var response = await Startup.client.DeleteAsync("http://localhost:51226/api/apis/" + id);
                 if (response.IsSuccessStatusCode)
                 {
                     responseString = (response.Content.ReadAsAsync<string>().Result);

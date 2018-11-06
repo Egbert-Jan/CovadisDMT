@@ -74,8 +74,12 @@ namespace CovadisAPI.Controllers
                     {
                         var apimodel = new ApiModel()
                         {
+                            Id = api.Id,
+                            Name = api.Name,
                             Url = api.Url,
-                            Status = res.StatusCode.ToString()
+                            Status = res.StatusCode.ToString(),
+                            LastData = api.LastData,
+                            Error = api.Error
                         };
                         return apimodel;
                     }

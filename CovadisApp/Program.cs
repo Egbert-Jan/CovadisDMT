@@ -62,7 +62,7 @@ namespace CovadisApp
                 using (HttpContent content = res.Content)
                 {
                     string data = await content.ReadAsStringAsync();
-                    Console.WriteLine(data);
+                    Console.WriteLine("Checked: https://localhost:44334/api/websites");
                 }
             }
         }

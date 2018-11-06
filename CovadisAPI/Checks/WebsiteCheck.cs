@@ -189,6 +189,7 @@ namespace CovadisAPI.Checks
                 var websites = context.WebsiteLog.Where(w => w.WebsiteID == website.Id).OrderByDescending(w => w.Id).Take(MessageAfterTrials).ToList();
 
 
+
                 Debug.WriteLine("");
                 foreach (var web in websites)
                 {
@@ -218,7 +219,10 @@ namespace CovadisAPI.Checks
                         String bodyString = 
                             "<h1>Hello,</h1><br>" +
                             "<p>The site " + website.Url + " is offline for " + MessageAfterTrials + " trials.</p> <br>" +
+                            "<p>Go to the <a href='https://localhost:44315/Website'>Dashboard</a> for more details.</p>" +
                             "<p>You get this message because blablabla</p>";
+
+
 
                         mail.SendMail("Website: " + website.Url + " is offline for " + MessageAfterTrials + " trials", bodyString);
 

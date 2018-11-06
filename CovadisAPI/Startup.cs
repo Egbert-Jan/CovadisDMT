@@ -103,7 +103,7 @@ namespace CovadisAPI
                 context.GlobalConfiguration.Add(new ConfigurationModel()
                 {
                     ConfigName = "MessageAfterTrials",
-                    Value = "2"
+                    Value = "3"
                 });
 
 

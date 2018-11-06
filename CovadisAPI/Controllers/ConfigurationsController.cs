@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CovadisAPI.Controllers
@@ -31,6 +32,17 @@ namespace CovadisAPI.Controllers
             }
 
             return JsonConvert.SerializeObject(configList);
+        }
+
+
+        [HttpGet("{id}")]
+        public object Get(int Id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var api = context.GlobalConfiguration.Find(Id);
+                return api;
+            }
         }
 
 
